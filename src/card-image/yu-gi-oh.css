@@ -1,0 +1,256 @@
+.yugioh-container {
+    position: relative;
+}
+
+.yugioh-container .card {
+    position: absolute;
+    width: 1394px; 
+    height: 2031px;
+    border-radius: 24px;
+    line-height: 1.15;
+    transform-origin: top left;
+    left: 50%;
+    top: 50%;
+}
+.yugioh-container .name {
+    position: absolute;
+    top: 96px;
+    left: 116px;
+    width: 1030px;
+    font-size: 108px;
+    white-space: nowrap;
+    transform-origin: top left;
+}
+.yugioh-container .name rt {
+    font-size: 18px;
+    line-height: 1.15;
+}
+.yugioh-container .name.name-sc {
+    font-family: custom1,serif
+}
+.yugioh-container .name.name-white {
+    color: white;
+}
+
+.yugioh-container .attribute {
+    position: absolute;
+    left: 1163px;
+    top: 96px;
+    width: 128px;
+    height: 128px;
+}
+
+.yugioh-container .level {
+    display: flex;
+    position: absolute;
+    top: 247px;
+    right: 147px;
+    line-height: 1.15;
+}
+.yugioh-container .level.level-xyz {
+    left: 147px;
+    text-align: left;
+}
+.yugioh-container img.type-icon {
+    width: 72px;
+    height: 72px;
+    margin-top: 5.4px;
+}
+
+.yugioh-container .mask {
+    position: absolute;
+    top: 322px;
+    left: 117px;
+}
+.yugioh-container .mask-pendulum {
+    position: absolute;
+    top: 342px;
+    left: 68px;
+}
+
+.yugioh-container .image {
+    position: absolute;
+    top: 375px;
+    left: 170px;
+    width: 1054px;
+    height: 1054px;
+}
+.yugioh-container .image-pendulum {
+    position: absolute;
+    left: 94px;
+    top: 364px;
+    width: 1205px;
+    height: 1205px;
+}
+
+.yugioh-container .pack-info {
+    position: absolute;
+    font-family: ygo-password, serif;
+    font-size: 40px;
+    top: 1455px;
+    right: 148px;
+}
+
+.yugioh-container .pack-info.pack-info-pendulum {
+    top: 1859px;
+    left: 116px;
+}
+
+.yugioh-container .scale {
+    position: absolute;
+    font-size: 98px;
+    font-family: ygo-atk-def, serif;
+    letter-spacing: -10px;
+    top: 1379px;
+    width: 115px;
+    text-align: center;
+}
+.yugioh-container .scale.scale-left {
+    right: 94px;
+}
+.yugioh-container .scale.scale-right {
+    left: 83px;
+}
+
+.yugioh-container .type {
+    display: flex;
+    position: absolute;
+    top: 254px;
+    font-size: 76px;
+    right: 134px;
+    letter-spacing: 2px;
+}
+.yugioh-container .type.type-sc {
+    font-family: custom1, serif;
+}
+.yugioh-container .type.type-sc .wrapper {
+    font-family: ygo-sc, serif;
+}
+
+.yugioh-container .type .type-icon {
+    margin-left: 10px;
+}
+
+.yugioh-container .description {
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+    top: 1528px;
+    left: 109px;
+    width: 1175px;
+    height: 310px;
+    font-size: calc(36px*var(--font-size-scale));
+    letter-spacing: 1.8px;
+    white-space: pre-wrap;
+    overflow: hidden;
+}
+.yugioh-container .description.description-pendulum {
+    left: 221px;
+    width: 950px;
+    top: 1282px;
+    height: 214px;
+}
+
+.yugioh-container .description .subtype {
+    display: flex;
+    font-size: 44px;
+}
+.yugioh-container .description.description-sc .subtype .wrapper {
+    font-family: ygo-sc, serif;
+}
+.yugioh-container .description .effect {
+    line-height: 1.2;
+}
+.yugioh-container .description.description-sc {
+    font-family: custom1, serif
+}
+.yugioh-container .description .flavor {
+    display: inline-flex;
+    text-align: right;
+    justify-content: right;
+    align-items: flex-end;
+    font-family: ygo-sc, serif;
+    padding-bottom: 4px;
+    height: 100%;
+}
+
+.yugioh-container .number-background {
+    position: absolute;
+    left: 109px;
+    top: 1844px;
+}
+
+.yugioh-container .number {
+    font-family: ygo-atk-def,serif;
+    position: absolute;
+    top: 1844px;
+    font-size: 62px;
+    letter-spacing: 2px;
+}
+.yugioh-container .number.atk {
+    right: 395px;
+}
+.yugioh-container .number.def {
+    right: 112px;
+}
+.yugioh-container .number.link {
+    top: 1854px;
+    right: 112px;
+    font-size: 44px;
+    letter-spacing: 2px;
+    transform: scaleX(1.3);
+    font-family: ygo-link, serif;
+}
+
+.yugioh-container .code {
+    position: absolute;
+    left: 66px;
+    top: 1932px;
+    font-family: ygo-password, serid;
+    font-size: 40px;
+}
+
+.yugioh-container .linkmarker {
+    position: absolute;
+}
+
+.yugioh-container .linkmarker.linkmarker-up {
+    top: 278px;
+    left: 555px;
+}
+
+.yugioh-container .linkmarker.linkmarker-right-up {
+    top: 299px;
+    left: 1130px;
+}
+
+.yugioh-container .linkmarker.linkmarker-right {
+    top: 761px;
+    left: 1223px;
+}
+
+.yugioh-container .linkmarker.linkmarker-right-down {
+    top: 1336px;
+    left: 1130px;
+}
+
+.yugioh-container .linkmarker.linkmarker-down {
+    top: 1428px;
+    left: 555px;
+}
+
+.yugioh-container .linkmarker.linkmarker-left-down {
+    top: 1336px;
+    left: 95px;
+}
+
+.yugioh-container .linkmarker.linkmarker-left {
+    top: 758px;
+    left: 71px;
+}
+
+.yugioh-container .linkmarker.linkmarker-left-up {
+    top: 299px;
+    left: 95px;
+}

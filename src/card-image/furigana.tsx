@@ -5,10 +5,6 @@ function replacer(_: string, p1: string, p2: string, p3: string, p4: string): st
     if (p4 != null) return `<span>${p4}</span>` 
     return `<ruby><rb>${p2}</rb><rt>${p3}</rt></ruby>`
 }
-function span_replacer(s: string) {
-    let child = s.substring(6, s.length - 12)
-    return "<span>" + child.replaceAll(/./g, (c) => `<span>${c}</span>`) + "</span>"
-}
 function Furigana(prop: HTMLProps<HTMLDivElement> & { devolution?: boolean }, ref?: Ref<HTMLDivElement>) {
     const [inner_html, set_inner_html] = useState("");
     useEffect(() => {

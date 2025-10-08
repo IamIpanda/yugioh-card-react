@@ -2,6 +2,35 @@
     position: relative;
 }
 
+.yugioh-container .furigana {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    word-break: break-all;
+}
+.yugioh-container .furigana ruby {
+    display: inline-flex;
+    flex-direction: column-reverse;
+    gap: 9px;
+    position: relative;
+    top: -2.25px;
+}
+.yugioh-container .furigana rt {
+    display: inline;
+    height: 0;
+}
+.yugioh-container .furigana rb {
+    text-align: center;
+    line-height: 1;
+}
+.yugioh-container .furigana span {
+    display: inline;
+    word-break: break-all;
+}
+.yugioh-container .furigana .newline {
+    width: 100%;
+}
+
 .yugioh-container .card {
     position: absolute;
     width: 1394px; 
@@ -21,12 +50,16 @@
     white-space: nowrap;
     transform-origin: top left;
 }
-.yugioh-container .name rt {
-    font-size: 18px;
+.yugioh-container .name span.rt, .yugioh-container .name rt {
+    font-size: 24px;
     line-height: 1.15;
+    text-align-last: justify;
 }
 .yugioh-container .name.name-sc {
     font-family: custom1,serif
+}
+.yugioh-container .name.name-jp {
+    font-family: ygo-jp, serif
 }
 .yugioh-container .name.name-white {
     color: white;
@@ -47,9 +80,19 @@
     right: 147px;
     line-height: 1.15;
 }
+.yugioh-container .level.level-13 {
+    right: 101px;
+}
 .yugioh-container .level.level-xyz {
     left: 147px;
     text-align: left;
+}
+.yugioh-container .level.level-xyz.level-13 {
+    left: 101px;
+    text-align: left;
+}
+.yugioh-container .level img.star {
+    margin-left: 4px;
 }
 .yugioh-container img.type-icon {
     width: 72px;
@@ -106,10 +149,10 @@
     text-align: center;
 }
 .yugioh-container .scale.scale-left {
-    right: 94px;
+    left: 83px;
 }
 .yugioh-container .scale.scale-right {
-    left: 83px;
+    right: 94px;
 }
 
 .yugioh-container .type {
@@ -122,6 +165,9 @@
 }
 .yugioh-container .type.type-sc {
     font-family: custom1, serif;
+}
+.yugioh-container .type.type-jp {
+    font-family: ygo-jp, serif;
 }
 .yugioh-container .type.type-sc .wrapper {
     font-family: ygo-sc, serif;
@@ -145,6 +191,14 @@
     white-space: pre-wrap;
     overflow: hidden;
 }
+.yugioh-container .description .furigana rt {
+    text-align: center;
+    font-size: calc(16px*var(--font-size-scale));
+}
+.yugioh-container .description .subtype .furigana rt {
+    text-align: center;
+    font-size: calc(22px*var(--font-size-scale));
+}
 .yugioh-container .description.description-pendulum {
     left: 221px;
     width: 950px;
@@ -156,6 +210,10 @@
     display: flex;
     font-size: 44px;
 }
+.yugioh-container .description .subtype span.rt {
+    font-size: 14px;
+    top: -4px;
+}
 .yugioh-container .description.description-sc .subtype .wrapper {
     font-family: ygo-sc, serif;
 }
@@ -165,7 +223,11 @@
 .yugioh-container .description.description-sc {
     font-family: custom1, serif
 }
-.yugioh-container .description .flavor {
+.yugioh-container .description.description-jp {
+    font-family: ygo-jp, serif;
+    line-height: 1.18;
+}
+.yugioh-container .description.description-sc .flavor {
     display: inline-flex;
     text-align: right;
     justify-content: right;

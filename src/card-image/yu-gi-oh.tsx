@@ -1,19 +1,25 @@
 import { Language, Card as DataCard, decide_backend, Type, decide_attribute, decide_type_text, Linkmarker, is_white_name } from "./data"
 import { HTMLProps, useEffect, useRef, useState } from "preact/compat"
 import "./yu-gi-oh.css"
+import { Furigana } from "./furigana"
 
 type Config = {
     lang: Language
+    furigana?: boolean
     asset_prefix: String
 }
 
 type CardProp = {
     card: DataCard,
-    image?: string | null,
+    image?: string | null
 } & Config & HTMLProps<HTMLDivElement>
 
+function devolution(config: Config) {
+    return !(config.furigana ?? config.lang == Language.JP);
+}
+
 function Card(props: CardProp) {
-    const [scale, set_scale] = useState(1);
+    const [scale, set_scale] = useState(0.1);
     const container_element = useRef<HTMLDivElement>(null)
     useEffect(() => {
         if (container_element.current == null) return;
@@ -40,7 +46,7 @@ function Card(props: CardProp) {
             <link rel="stylesheet" type="text/css" href={`${asset_prefix}/custom-font/custom-font.css`} />
 
             <Name class={`name name-${lang} ${is_white_name(card.type) ? 'name-white' : ''}`} 
-                style={card.name_color ? { name: card.name_color } : undefined}>{card.name}</Name>
+                style={card.name_color ? { name: card.name_color } : undefined} devolution={devolution(props)}>{card.name}</Name>
             <Attribute {...props} />
             { is_link ? null : is_monster ? <Levels {...props} /> 
               : <Types lang={lang} asset_prefix={asset_prefix} {...decide_type_text(card.type, lang)} /> }
@@ -49,13 +55,15 @@ function Card(props: CardProp) {
             { is_pendlum ? <>
                 { card.lscale != null ? <div class="scale scale-left">{card.lscale}</div> : null }
                 { card.rscale != null ? <div class="scale scale-right">{card.rscale}</div> : null }
-                { card.pendulum_text != null ? <EffectDescription class={`description description-${lang} description-pendulum`} flag={card.pendulum_text}>{card.pendulum_text}</EffectDescription> : null }
+                { card.pendulum_text != null ? <EffectDescription class={`description description-${lang} description-pendulum`} flag={card.pendulum_text}>
+                    <Furigana devolution={devolution(props)}>{card.pendulum_text}</Furigana>
+                </EffectDescription> : null }
             </> : null }
             { card.pack_info == null ? null : <div class={`pack-info ${is_pendlum ? 'pack-info-pendulum' : ''}`}>{card.pack_info}</div> }
             { is_link ? <LinkMarker linkmarker={card.defense ?? 0} {...props} /> : null}
             <EffectDescription class={`description description-${lang}`} flag={card.desc}>
-                { card.subtype_text == null ? null : <div class="subtype"><div class="wrapper">【</div>{card.subtype_text}<div class="wrapper">】</div></div> }
-                <div class="effect">{card.desc}</div>
+                {card.subtype_text == null ? null : <div class="subtype"><div class="wrapper">【</div><Furigana devolution={devolution(props)}>{card.subtype_text}</Furigana><div class="wrapper">】</div></div> }
+                <Furigana class="effect" devolution={devolution(props)}>{card.desc}</Furigana>
                 { card.flavor_text == null ? null : <div class="flavor">{card.flavor_text}</div> }
             </EffectDescription>
             { is_monster ? <img class="number-background" src={`${asset_prefix}/yugioh/image/${(card.type & Type.Link) > 0 ? 'atk-link.svg' : 'atk-def.svg'}`} /> : null }
@@ -66,7 +74,7 @@ function Card(props: CardProp) {
     </div>
 }
 
-function Name(props: HTMLProps<HTMLDivElement>) {
+function Name(props: HTMLProps<HTMLDivElement> & { devolution: boolean }) {
     let [scale, setScale] = useState(1);
     let element = useRef<HTMLDivElement>(null)
     const shrink = () => {
@@ -76,13 +84,14 @@ function Name(props: HTMLProps<HTMLDivElement>) {
     }
     useEffect(shrink, [element.current, scale])
     useEffect(() => { setScale(1); shrink() }, [props.children])
-    return <div {...props} ref={element} style={{ transform: `scaleX(${scale})` }}>{props.children}</div>
+    return <Furigana {...props} ref={element} style={{ transform: `scaleX(${scale})` }}>{props.children}</Furigana>
 }
 
 function Types(props: {text: String, icon?: String} & Config) {
+    if (props.text == null || props.text === "") return null;
     return <div class={`type type-${props.lang}`}>
         <div class="wrapper">【</div>
-        <div class="type-text">{props.text}</div>
+        <Furigana class="type-text">{props.text}</Furigana>
         {props.icon == null ? null : <img class={`type-icon`} src={`${props.asset_prefix}/yugioh/image/icon-${props.icon}.png`} />}
         <div class="wrapper">】</div>
     </div>
@@ -90,7 +99,7 @@ function Types(props: {text: String, icon?: String} & Config) {
 
 function Levels(props: {card: DataCard} & Config) {
     const xyz = (props.card.type & Type.Xyz) > 0
-    return <div class={`level ${xyz ? "level-xyz" : ''}`}>
+    return <div class={`level ${xyz ? "level-xyz" : ''} level-${props.card.level}`}>
         {Array(props.card.level).fill(<img class="star" src={`${props.asset_prefix}/yugioh/image/${xyz ? 'rank.png' : 'level.png'}`} />)}
     </div>
 }
@@ -145,7 +154,8 @@ function EffectDescription(props: {scale?: number, min_scale?: number, flag: any
     }
     useEffect(shrink, [element.current, scale])
     useEffect(() => { setScale(1); shrink() }, [props.children])
-    return <div {...props} ref={element} style={{"--font-size-scale": props.scale ?? scale}}>{props.children}</div>
+    let {flag, ...rest_props} = props 
+    return <div {...rest_props} ref={element} style={{"--font-size-scale": props.scale ?? scale}}>{props.children}</div>
 }
 
 export {

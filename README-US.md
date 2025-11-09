@@ -24,7 +24,7 @@ Currently, only standard Yu-Gi-Oh! card is supported
 + `card`, `Data.Card` object
 + `image`, Card image
 + `lang`, Card Language (Enum `Data.Language`)
-+ `asset_prefix`, Please find a proper position to put the `public/assets` folder in this repo. This folder is the same as which in `yugioh-card`
++ `asset_prefix`, image source. Please deploy the [yugioh-card static files](https://github.com/kooriookami/yugioh-card/tree/master/src/assets/yugioh-card/yugioh) to an appropriate location. This project has no forks for now.
 + `furigana`, Force render furigana inner text. Otherwise, only enabled when `lang` is `JP`.
 
 #### Scale Parameters

@@ -1,4 +1,3 @@
-# yugioh-card-react
 <h1 align="center">游戏王卡片 - Yugioh Card React</h1>
 <div align="center">
   <p>简体中文 | <a href="./README-US.md">English</a></p>
@@ -25,7 +24,7 @@
 + `card`, `Data.Card`对象（下详）
 + `image`, 卡片图像
 + `lang`, 语言（`Data.Language`枚举）
-+ `asset_prefix`, 图片源，请将项目内`public/assets`部署至合适的位置。该文件夹与`yugioh-card`完全相同。
++ `asset_prefix`, 图片源，请将[yugioh-card的静态文件](https://github.com/kooriookami/yugioh-card/tree/master/src/assets/yugioh-card/yugioh)部署至合适的位置。本项目暂无分叉。
 + `furigana`, 是否强制启用振假名渲染。如果未强制启用，仅在`lang`设为`JP`时强制启用。
 
 #### 缩放参数

@@ -1,9 +1,12 @@
 import { forwardRef, HTMLProps, Ref, useEffect, useState } from "preact/compat";
 
-const FURIGANA_REGEXP = /(\[(.+?)\((.+?)\)\])|(.)/g
-function replacer(_: string, p1: string, p2: string, p3: string, p4: string): string {
-    if (p4 != null) return `<span>${p4}</span>` 
-    return `<ruby><rb>${p2}</rb><rt>${p3}</rt></ruby>`
+const FURIGANA_REGEXP = /([\[\{](.+?)\((.+?)\)[\]\}])|(.)/g
+function replacer(_0: string, p1: string, p2: string, p3: string, p4: string): string {
+    if (p4 != null) return `<span>${p4}</span>`
+    if (p1.startsWith("{"))
+        return `<ruby class='katakana'><rb>${p2}</rb><rt>${p3}</rt></ruby>`
+    else
+        return `<ruby><rb>${p2}</rb><rt>${p3}</rt></ruby>`
 }
 function Furigana(prop: HTMLProps<HTMLDivElement> & { devolution?: boolean }, ref?: Ref<HTMLDivElement>) {
     const [inner_html, set_inner_html] = useState("");

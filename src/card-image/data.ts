@@ -13,8 +13,8 @@ type Card = {
     name: string,
     desc: string,
     type: number,
-    attribute: number,
-    level: number,
+    attribute?: number,
+    level?: number,
 
     subtype_text?: string
     attack?: number,
@@ -94,9 +94,10 @@ function decide_backend(type: Type): String {
     
 }
 
-function decide_attribute(type: Type, attribute: Attribute): String | null {
+function decide_attribute(type: Type, attribute?: Attribute): String | null {
     if ((type & Type.Spell) > 0) return "spell"
     else if ((type & Type.Trap) > 0) return "trap"
+    else if (attribute == null) return null
     else if ((attribute & Attribute.Earth) > 0)  return "earth"
     else if ((attribute & Attribute.Water) > 0)  return "water"
     else if ((attribute & Attribute.Fire) > 0)   return "fire"
@@ -126,7 +127,7 @@ function is_white_name(type: Type) {
     return (type & (Type.Spell | Type.Trap | Type.Xyz | Type.Link)) > 0
 }
 
-let TYPE_TEXTS: { [key in Language]?: {[key in Type]?: string}} = {
+const TYPE_TEXTS: { [key in Language]?: {[key in Type]?: string}} = {
     [Language.ZH_CN]: {
         [Type.Spell]: "魔法卡",
         [Type.Trap]: "陷阱卡",
@@ -136,8 +137,8 @@ let TYPE_TEXTS: { [key in Language]?: {[key in Type]?: string}} = {
         [Type.Trap]: "陷阱卡",
     },
     [Language.JP]: {
-        [Type.Spell]: "魔法カード",
-        [Type.Trap]: "罠カード",
+        [Type.Spell]: "[魔(ま)][法(ほう)]カード",
+        [Type.Trap]: "[罠(トラップ)]カード",
     },
     [Language.KR]: {
         [Type.Spell]: "마법 카드",
@@ -149,6 +150,15 @@ let TYPE_TEXTS: { [key in Language]?: {[key in Type]?: string}} = {
     }
 }
 
+const BRACKET_TEXTS: Record<Language, [String, String]> = {
+    [Language.EN]: ['[', ']'],
+    [Language.ZH_CN]: ['【', '】'],
+    [Language.ZH_TW]: ['【', '】'],
+    [Language.JP]: ['【', '】'],
+    [Language.KR]: ['[', ']'],
+    [Language.ASTRAL]: ['【', '】']
+}
+
 export {
     type Card,
     Language,
@@ -158,5 +168,7 @@ export {
     is_white_name,
     decide_backend,
     decide_type_text,
-    decide_attribute
+    decide_attribute,
+    TYPE_TEXTS,
+    BRACKET_TEXTS
 }

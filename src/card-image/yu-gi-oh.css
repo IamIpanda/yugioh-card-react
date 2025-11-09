@@ -11,13 +11,26 @@
 .yugioh-container .furigana ruby {
     display: inline-flex;
     flex-direction: column-reverse;
-    gap: 9px;
     position: relative;
-    top: -2.25px;
+    top: -4px;
+    height: 0px;
 }
 .yugioh-container .furigana rt {
+    /*
+    position: absolute;
+    top: -12px;
+    left: 0;
+    min-width: 100%;
+    white-space: nowrap;
+    */
+    font-family: ygo-tip, serif;
+    font-weight: 700;
     display: inline;
     height: 0;
+    text-align: center;
+}
+.yugioh-container .furigana .katakana rt {
+    text-align-last: justify;
 }
 .yugioh-container .furigana rb {
     text-align: center;
@@ -38,14 +51,19 @@
     border-radius: 24px;
     line-height: 1.15;
     transform-origin: top left;
+}
+.yugioh-container .card.card-auto {
     left: 50%;
     top: 50%;
+    transform: scale(var(--card-scale), var(--card-scale)) translateX(-50%) translateY(-50%);
 }
+
 .yugioh-container .name {
     position: absolute;
     top: 96px;
     left: 116px;
     width: 1030px;
+    height: 124px;
     font-size: 108px;
     white-space: nowrap;
     transform-origin: top left;
@@ -53,13 +71,30 @@
 .yugioh-container .name span.rt, .yugioh-container .name rt {
     font-size: 24px;
     line-height: 1.15;
-    text-align-last: justify;
 }
 .yugioh-container .name.name-sc {
-    font-family: custom1,serif
+    font-family: custom1, serif
+}
+.yugioh-container .name.name-tc {
+    font-family: ygo-tc,'楷体', serif;
+}
+.yugioh-container .name.name-en {
+    font-family: ygo-en-name, serif;
+    top: 58px;
+    font-size: 158px;
+}
+.yugioh-container .name.name-kr {
+    font-family: ygo-kr-name;
 }
 .yugioh-container .name.name-jp {
     font-family: ygo-jp, serif
+}
+.yugioh-container .name.furigana ruby {
+    top: -9px;
+    gap: 3px;
+}
+.yugioh-container .name.furigana rt {
+    font-size: 18px;
 }
 .yugioh-container .name.name-white {
     color: white;
@@ -123,7 +158,7 @@
     left: 94px;
     top: 364px;
     width: 1205px;
-    height: 1205px;
+    height: auto;
 }
 
 .yugioh-container .pack-info {
@@ -137,6 +172,9 @@
 .yugioh-container .pack-info.pack-info-pendulum {
     top: 1859px;
     left: 116px;
+}
+.yugioh-container .pack-info.pack-info-link {
+    right: 265px;
 }
 
 .yugioh-container .scale {
@@ -163,18 +201,52 @@
     right: 134px;
     letter-spacing: 2px;
 }
+.yugioh-container .type .furigana ruby {
+    gap: 20px;
+    top: -5px;
+}
+.yugioh-container .type .furigana rt {
+    font-size: 18px;
+}
 .yugioh-container .type.type-sc {
     font-family: custom1, serif;
-}
-.yugioh-container .type.type-jp {
-    font-family: ygo-jp, serif;
 }
 .yugioh-container .type.type-sc .wrapper {
     font-family: ygo-sc, serif;
 }
+.yugioh-container .type.type-tc {
+    font-family: ygo-tc, '楷体', serif;
+}
+.yugioh-container .type.type-en {
+    font-family: ygo-en-race, serif;
+    top: 247px;
+    font-size: 74px;
+}
+.yugioh-container .type.type-kr {
+    top: 244px;
+    font-size: 88px;
+    font-family: ygo-kr-race, serif;
+}
+.yugioh-container .type.type-kr .type-text, .yugioh-container .type.type-kr .wrapper {
+    transform: scaleY(0.75);
+}
+.yugioh-container .type.type-jp {
+    font-family: ygo-jp, serif;
+    top: 248px;
+}
 
 .yugioh-container .type .type-icon {
     margin-left: 10px;
+}
+.yugioh-container .type.type-en .type-icon {
+    margin-top: 18px;
+}
+.yugioh-container .type.type-kr .type-icon {
+    margin-top: 14px;
+    margin-right: 4px;
+}
+.yugioh-container .type.type-jp .type-icon {
+    margin-top: 12px;
 }
 
 .yugioh-container .description {
@@ -189,21 +261,41 @@
     font-size: calc(36px*var(--font-size-scale));
     letter-spacing: 1.8px;
     white-space: pre-wrap;
-    overflow: hidden;
+    
+}
+.yugioh-container .description.description-en {
+    font-size: calc(42px*var(--font-size-scale));
+}
+.yugioh-container .description.description-en.description-normal .effect {
+    font-family: ygo-en-italic, serif;
+}
+.yugioh-container .description .furigana ruby {
+    gap: calc(14.5px*var(--font-size-scale));
 }
 .yugioh-container .description .furigana rt {
     text-align: center;
     font-size: calc(16px*var(--font-size-scale));
 }
+.yugioh-container .description .subtype .furigana ruby {
+    gap: 16px;
+    
+}
 .yugioh-container .description .subtype .furigana rt {
     text-align: center;
     font-size: calc(22px*var(--font-size-scale));
 }
+
 .yugioh-container .description.description-pendulum {
     left: 221px;
     width: 950px;
     top: 1282px;
     height: 214px;
+}
+.yugioh-container .description.description.description-pendulum .furigana ruby {
+    gap: calc(12px*var(--font-size-scale));
+}
+.yugioh-container .description.description.description-pendulum .furigana rt {
+    font-size: calc(12px*var(--font-size-scale));
 }
 
 .yugioh-container .description .subtype {
@@ -217,24 +309,51 @@
 .yugioh-container .description.description-sc .subtype .wrapper {
     font-family: ygo-sc, serif;
 }
+.yugioh-container .description.description-en .subtype {
+    font-family: ygo-en-race, serif;
+    font-size: 56px;
+}
+.yugioh-container .description.description-kr .subtype {
+    font-family: ygo-kr-race, serif;
+}
+.yugioh-container .description .subtype .furigana rt {
+    font-size: 14px;
+}
 .yugioh-container .description .effect {
     line-height: 1.2;
 }
+.yugioh-container .description .effect.furigana rt {
+    font-size: calc(12px*var(--font-size-scale));
+}
 .yugioh-container .description.description-sc {
-    font-family: custom1, serif
+    font-family: custom1, serif;
+}
+.yugioh-container .description.description-tc {
+    font-family: ygo-tc, '楷体', serif;
+}
+.yugioh-container .description.description-en {
+    font-family: ygo-en, serif;
+}
+.yugioh-container .description.description-kr {
+    font-family: ygo-kr, serif;
 }
 .yugioh-container .description.description-jp {
     font-family: ygo-jp, serif;
     line-height: 1.18;
 }
-.yugioh-container .description.description-sc .flavor {
+.yugioh-container .description .flavor {
     display: inline-flex;
     text-align: right;
     justify-content: right;
     align-items: flex-end;
-    font-family: ygo-sc, serif;
     padding-bottom: 4px;
     height: 100%;
+}
+.yugioh-container .description.description-sc .flavor {
+    font-family: ygo-sc, serif;
+}
+.yugioh-container .description.description-en .flavor {
+    font-family: ygo-en-italic, serif;
 }
 
 .yugioh-container .number-background {
@@ -244,7 +363,7 @@
 }
 
 .yugioh-container .number {
-    font-family: ygo-atk-def,serif;
+    font-family: ygo-atk-def, serif;
     position: absolute;
     top: 1844px;
     font-size: 62px;

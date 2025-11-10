@@ -9,7 +9,7 @@ enum Language {
 
 
 type Card = {
-    code: number,
+    code?: number,
     name: string,
     desc: string,
     type: number,
@@ -25,9 +25,14 @@ type Card = {
     rscale?: number,
 
     pack_info?: string,
-    name_color?: string,
+    name_color?: string | string[],
     flavor_text?: string,
     image?: string
+ 
+    copyright?: 'auto' | 'sc' | 'jp' | 'en'
+    laser?: 'laser1' | 'laser2' | 'laser3' | 'laser4'
+    rare?: 'dt' | 'ur' | 'gr' | 'hr' | 'ser' | 'gser' | 'pser'
+    twentieth? : boolean
 }
 
 enum Type {

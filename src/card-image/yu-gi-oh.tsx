@@ -43,14 +43,22 @@ function Card(props: CardProp) {
     const card_image = image ?? card.image;
     const devolution = !(props.furigana ?? lang == Language.JP);
     const brackets = BRACKET_TEXTS[lang];
+    const copyright = card.copyright === 'auto' ? {
+        [Language.ASTRAL]: 'jp',
+        [Language.EN]: 'en',
+        [Language.JP]: 'jp',
+        [Language.ZH_CN]: 'sc',
+        [Language.ZH_TW]: 'jp',
+        [Language.KR]: 'jp'
+    }[lang] : card.copyright
+
 
     return <div class="yugioh-container" {...rest_props} ref={container_element}>
         <div class={`card ${_scale == null ? 'card-auto' : ''}`} style={{ backgroundImage: `url(${background})`, '--card-scale': scale }} >
             <link rel="stylesheet" type="text/css" href={`${asset_prefix}/yugioh/font/ygo-font.css`} />
             <link rel="stylesheet" type="text/css" href={`${asset_prefix}/custom-font/custom-font.css`} />
 
-            <Name class={`name name-${lang} ${is_white_name(card.type) ? 'name-white' : ''}`} 
-                style={card.name_color ? { name: card.name_color } : undefined} devolution={devolution} scale={name_scale} >{card.name}</Name>
+            <Name class={`name name-${lang} ${is_white_name(card.type) ? 'name-white' : ''}`} devolution={devolution} scale={name_scale} color={card.name_color}>{card.name}</Name>
             <Attribute {...props} />
             { is_link ? null : is_monster ? <Levels {...props} /> 
               : <Types lang={lang} asset_prefix={asset_prefix} devolution={devolution} {...decide_type_text(card.type, lang)} /> }
@@ -65,6 +73,7 @@ function Card(props: CardProp) {
             </>}
             { card.pack_info && <div class={`pack-info${is_pendlum ? ' pack-info-pendulum' : ''}${is_link ? ' pack-info-link' : ''}`}>{card.pack_info}</div> }
             { is_link && <LinkMarker linkmarker={card.defense ?? 0} {...props} /> }
+            { card.twentieth && <img class="twentieth" src={`${asset_prefix}/yugioh/image/twentieth.png`} />}
             <EffectDescription class={`description description-${lang} ${is_normal ? 'description-normal' : ''}`} flag={card.desc} scale={desc_scale}>
                 {card.subtype_text && <div class="subtype"><div class="wrapper">{brackets[0]}</div><Furigana devolution={devolution}>{card.subtype_text}</Furigana><div class="wrapper">{brackets[1]}</div></div> }
                 <Furigana class="effect" devolution={devolution}>{card.desc}</Furigana>
@@ -73,15 +82,19 @@ function Card(props: CardProp) {
             { is_monster && <img class="number-background" src={`${asset_prefix}/yugioh/image/${(card.type & Type.Link) > 0 ? 'atk-link.svg' : 'atk-def.svg'}`} />}
             { is_monster && <Number class="atk" num={card.attack ?? 0} />}
             { is_monster && <Number class={`${is_link ? "link" : "def"}`} num={(is_link ? card.level : card.defense) ?? 0} />}
-            <div class="code">{card.code}</div>
+            { card.code && <div class="code">{card.code}</div> }
+            { copyright && <img class={`copyright copyright-${copyright}`} src={`${asset_prefix}/yugioh/image/copyright-${copyright}-${is_white_name(card.type) ? 'white' : 'black'}.svg`} /> }
+            { card.laser && <img class="laser" src={`${asset_prefix}/yugioh/image/${card.laser}.png`} /> }
+            { card.rare && <img class={`rare rare-${card.rare}`} src={`${asset_prefix}/yugioh/image/rare-${card.rare}${is_pendlum ? '-pendulum' : ''}.png`} /> }
         </div>
     </div>
 }
 
-function Name(props: HTMLProps<HTMLDivElement> & { devolution: boolean, scale?: number }) {
-    let [scale, setScale] = useState(props.scale ?? 1);
+function Name(props: HTMLProps<HTMLDivElement> & { devolution: boolean, scale?: number, color?: string | string[] }) {
+    let { scale: _scale, color, ...rest_props } = props;
+    let [scale, setScale] = useState(_scale ?? 1);
     let element = useRef<HTMLDivElement>(null)
-    if (props.scale == null) {
+    if (_scale == null) {
         const shrink = () => {
             if (element.current == null) return
             if (element.current.offsetWidth < element.current.scrollWidth)
@@ -90,7 +103,15 @@ function Name(props: HTMLProps<HTMLDivElement> & { devolution: boolean, scale?: 
         useEffect(shrink, [element.current, scale])
         useEffect(() => { setScale(1); shrink() }, [props.children])
     }
-    return <Furigana {...props} ref={element} style={{ transform: `scaleX(${scale})` }}>{props.children}</Furigana>
+    let style = props.style ?? {} as any
+    let name_style = {}
+    if (color == null)
+        name_style = {}
+    else if (typeof color == 'string')
+        name_style = { color: color }
+    else 
+        name_style = { background: `linear-gradient(${color.join(', ')})`, backgroundClip: 'text', '-webkit-background-clip': 'text', color: 'transparent' }
+    return <Furigana {...rest_props} ref={element} style={{ transform: `scaleX(${scale})`, ...name_style, ...style }}>{props.children}</Furigana>
 }
 
 function Types(props: {text: String, icon?: String, devolution?: boolean} & Config) {

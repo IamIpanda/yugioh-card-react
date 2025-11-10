@@ -435,3 +435,27 @@
     top: 299px;
     left: 95px;
 }
+
+.yugioh-container .copyright {
+    position: absolute;
+    top: 1936px;
+    right: 141px;
+}
+
+.yugioh-container .laser {
+    position: absolute;
+    left: 1276px;
+    top: 1913px;
+}
+
+.yugioh-container .rare {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.yugioh-container .twentieth {
+    position: absolute;
+    top: 1532px;
+    left: 547px;
+}

@@ -52,7 +52,8 @@ let card3_precursor: Partial<Data.Card> = {
     level: 2,
     attack: 1600,
     defense: 40,
-    pack_info: 'AGOV-JP046'
+    pack_info: 'AGOV-JP046',
+    name_color: ['red', 'white', 'red']
 }
 let card3_texts: Record<Language, Partial<Data.Card>> = {
     [Language.ZH_CN]: {
@@ -73,7 +74,7 @@ When your opponent activates a card or effect(Quick Effect): You can target 2 fa
 そのカードを[除(じょ)][外(がい)]する。\
 このターン、[自(じ)][分(ぶん)]のモンスターは[直(ちょく)][接(せつ)][攻(こう)][撃(げき)]できない。\
 ②：[相(あい)][手(て)]の[効(こう)][果(か)]が[発(はつ)][動(どう)]した[時(とき)]、[自(じ)][分(ぶん)]フィールドのモンスターを[含(ふく)]むフィールドの[表(おもて)][側(がわ)][表(ひょう)][示(じ)]モンスター２[体(たい)]を[対(たい)][象(しょう)]として[発(はつ)][動(どう)]できる。\
-そのモンスター２[体(たい)]をエンドフェイズまで[除(じょ)][外(がい)]する。', subtype_text: '[戦(せん)][士(し)][族(ぞく)]/リーンク/[効(こう)][果(か)]' },
+そのモンスター２[体(たい)]をエンドフェイズまで[除(じょ)][外(がい)]する。', subtype_text: '[戦(せん)][士(し)][族(ぞく)]/リンク/[効(こう)][果(か)]' },
     [Language.KR]: {
         name: '에스:피 리틀나이트', desc: '효과 몬스터 2장\n\
 이 카드명의 ①②의 효과는 각각 1턴에 1번밖에 사용할 수 없다.\n\
@@ -113,13 +114,13 @@ let card4_texts: Record<Language, Partial<Data.Card>> = {
         name: '[竜(りゅう)][剣(けん)][士(し)]ラスター[Ｐ(ペンドゥラム)]', 
         desc: 'このカードを[素(そ)][材(ざい)]として、「[竜(りゅう)][剣(けん)][士(し)]」モンスター[以(い)][外(がい)]の[融(ゆう)][合(ごう)]・Ｓ・Ｘモンスターを[特(とく)][殊(しゅ)][召(しょう)][喚(かん)]する[事(こと)]はできない。', 
         pendulum_text: '①：１ターンに１[度(ど)]、もう[片(かた)][方(ほう)]の[自(じ)][分(ぶん)]のＰゾーンにカードが[存(そん)][在(ざい)]する[場(ば)][合(あい)]に[発(はつ)][動(どう)]できる。そのカードを[破(は)][壊(かい)]し、そのカードの[同(どう)][名(めい)]カード１[枚(まい)]をデッキから[手(て)][札(ふだ)]に[加(くわ)]える。',
-        subtype_text: '[戦(せん)][士(し)][族(ぞく)]/リーンク/[効(こう)][果(か)]'
+        subtype_text: 'ドラゴン[族(ぞく)]/ペンドゥラム/チューナー/[効(こう)][果(か)]'
     },
     [Language.KR]: {
         name: '룡검사 라스터P', 
         desc: '이 카드를 소재로서, "룡검사" 몬스터 이외의 융합 / 싱크로 / 엑시즈 몬스터를 특수 소환할 수 없다.', 
         pendulum_text: '①: 1턴에 1번, 다른 한쪽 자신의 펜듈럼 존에 카드가 존재할 경우에 발동할 수 있다. 그 카드를 파괴하고, 그 카드의 같은 이름의 카드 1장을 덱에서 패에 넣는다.',
-        subtype_text: '전사족/링크/효과'
+        subtype_text: '전사족/링크/튜너/효과'
     },
     [Language.ASTRAL]: {}
 }
@@ -131,6 +132,5 @@ export const App = () => {
         <Card asset_prefix="/assets" lang={lang} card={merge_card(card2_precursor, card2_texts, lang)} style={{ width: 'calc(25% - 5px)' }} />
         <Card asset_prefix="/assets" lang={lang} card={merge_card(card3_precursor, card3_texts, lang)} style={{ width: 'calc(25% - 5px)' }} />
         <Card asset_prefix="/assets" lang={lang} card={merge_card(card4_precursor, card4_texts, lang)} style={{ width: 'calc(25% - 5px)' }} />
-       
     </div>
 }

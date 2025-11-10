@@ -4,7 +4,8 @@
 </div>
 <p align="center">A react component for rendering a yu-gi-oh! card.</p>
 
-That's a simulation for [yugioh-card](https://www.npmjs.com/package/yugioh-card).
+That's a simulation for [yugioh-card](https://www.npmjs.com/package/yugioh-card).    
+Only HTML + CSS is used, no Canvas.    
 Currently, only standard Yu-Gi-Oh! card is supported
 
 ## Usage
@@ -33,6 +34,7 @@ Currently, only standard Yu-Gi-Oh! card is supported
 + `desc_scale`, Font size scale for effect panel. When undefined will auto scale by text length. (Will cause the panel flash) Min 0.5x.
 + `pdesc_scale`, Font size scale for pendulum effect panel. When undefined will auto scale by text length. (Will cause the panel flash) Min 0.5x.
 
+#### `Data.Card` object
 |FieldName|Type|Description|
 |---------|-----|-----------|
 |code|number|Eight-digit password|
@@ -51,10 +53,14 @@ Currently, only standard Yu-Gi-Oh! card is supported
 |name_color?|string|Card name color|
 |flavor_text?|string|Flavor text|
 |image?|string|Card image (will be overridden by `prop.image`)|
+copyright?|'auto'&#124;'sc'&#124;'jp'&#124;'en'|copyright text, will decided by `lang` if set `auto`
+laser?|'laser1'&#124;'laser2'&#124;'laser3'&#124;'laser4'|laser sign
+rare?|'dt'&#124;'ur'&#124;'gr'&#124;'hr'&#124;'ser'&#124;'gser'&#124;'pser'|card rare
+twentieth?|boolean|20ser sign
 
-## Japanese Furigana
+### Japanese Furigana
 Use `[Kanji (Hiragana)]` and `{Kanji (Katakana)}` for furigana.  
 The content wrapped in square brackets should be center-aligned, and the content wrapped in curly braces should be justified (left and right aligned); Please refer to the actual alignment on the card.
 
-## Notes
+### Notes
 The font for Simplified Chinese cards is `custom1`. If you need to use `ygo-sc` or other fonts, please modify the CSS file yourself.

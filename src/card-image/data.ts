@@ -84,25 +84,30 @@ enum Linkmarker {
     TopRight = 256,
 }
 
-function decide_backend(type: Type): String {
-    let pendulum = (type & Type.Pendulum)>0
-    if ((type & Type.Spell) > 0)        return "spell"
-    else if ((type & Type.Trap) > 0)    return "trap"
-    else if ((type & Type.Synchro) > 0) return pendulum ? "synchro-pendulum" : "synchro"
-    else if ((type & Type.Xyz) > 0)     return pendulum ? "xyz-pendulum" : "xyz"
-    else if ((type & Type.Fusion) > 0)  return pendulum ? "fusion-pendulum" : "fusion"
-    else if ((type & Type.Ritual) > 0)  return pendulum ? "ritual-pendulum" : "ritual"
-    else if ((type & Type.Normal) > 0)  return pendulum ? "normal-pendulum" : "normal"
-    else if ((type & Type.Token) > 0)   return "token"
-    else if ((type & Type.Link) > 0)    return "link"
-    else                                return pendulum ? "effect-pendulum" : "effect"
+function decide_backend(type: Type, extend?: boolean): String {
+    let answer = ""
+    if ((type & Type.Synchro) > 0)      answer = "synchro"
+    else if ((type & Type.Xyz) > 0)     answer = "xyz"
+    else if ((type & Type.Fusion) > 0)  answer = "fusion"
+    else if ((type & Type.Ritual) > 0)  answer = "ritual"
+    else if ((type & Type.Normal) > 0)  answer = "normal"
+    else if ((type & Type.Token) > 0)   answer = "token"
+    else if ((type & Type.Link) > 0)    answer = "link"
+    else if ((type & Type.Spell) > 0)   answer = "spell"
+    else if ((type & Type.Trap) > 0)    answer = "trap"
+    else answer = "effect"
+    const is_pendulum = (type & Type.Pendulum) > 0
+    let pendulum_appendix = is_pendulum ? "-pendulum" : ''
+    if (extend && is_pendulum && (type & Type.Trap) > 0) {
+        pendulum_appendix = '-oscillulam'
+        if (answer == 'trap') answer = 'effect'
+    }
+    return answer + pendulum_appendix
     
 }
 
 function decide_attribute(type: Type, attribute?: Attribute): String | null {
-    if ((type & Type.Spell) > 0) return "spell"
-    else if ((type & Type.Trap) > 0) return "trap"
-    else if (attribute == null) return null
+    if (attribute == null) return null
     else if ((attribute & Attribute.Earth) > 0)  return "earth"
     else if ((attribute & Attribute.Water) > 0)  return "water"
     else if ((attribute & Attribute.Fire) > 0)   return "fire"
@@ -110,6 +115,8 @@ function decide_attribute(type: Type, attribute?: Attribute): String | null {
     else if ((attribute & Attribute.Light) > 0)  return "light"
     else if ((attribute & Attribute.Dark) > 0)   return "dark"
     else if ((attribute & Attribute.Divine) > 0) return "divine"
+    else if ((type & Type.Spell) > 0) return "spell"
+    else if ((type & Type.Trap) > 0) return "trap"
     else return null
 }
 
@@ -128,7 +135,8 @@ function decide_type_text(type: Type, lang: Language): {text: string, icon?: str
     return {text: text, icon: icon} 
 }
 
-function is_white_name(type: Type) {
+function is_white_name(type: Type, extend?: boolean) {
+    if (extend && (type & Type.Pendulum) > 0 && (type & Type.Trap) > 0) return false
     return (type & (Type.Spell | Type.Trap | Type.Xyz | Type.Link)) > 0
 }
 

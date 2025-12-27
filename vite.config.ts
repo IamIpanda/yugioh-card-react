@@ -13,7 +13,14 @@ export default defineConfig(({ command }) => ({
       fileName: 'yugioh-card'
     },
     rollupOptions: {
-      external: /(node_modules.*|src\/test\..*)/
+      external: [
+        /(src\/test\..*)/,
+        "preact",
+        "preact/compat",
+        "react",
+        "react-dom",
+        "react/jsx-runtime"
+      ],
     },
   },
   plugins: [preact(), dts({

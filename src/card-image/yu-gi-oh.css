@@ -261,7 +261,9 @@
     font-size: calc(36px*var(--font-size-scale));
     letter-spacing: 1.8px;
     white-space: pre-wrap;
-    
+}
+.yugioh-container .description.description-no-atk {
+    height: 368px;
 }
 .yugioh-container .description.description-en {
     font-size: calc(42px*var(--font-size-scale));

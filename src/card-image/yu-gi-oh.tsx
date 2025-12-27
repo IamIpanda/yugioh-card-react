@@ -16,11 +16,13 @@ type CardProp = {
     scale?: number,
     name_scale?: number,
     desc_scale?: number,
-    pdesc_scale?: number
+    pdesc_scale?: number,
+
+    extend?: boolean
 } & Config & Omit<HTMLProps<HTMLDivElement>, 'lang'>
 
 function Card(props: CardProp) {
-    const { card, image, asset_prefix, lang, scale: _scale, name_scale, desc_scale, pdesc_scale, ...rest_props } = props;
+    const { card, image, asset_prefix, lang, scale: _scale, name_scale, desc_scale, pdesc_scale, extend, ...rest_props } = props;
     const [scale, set_scale] = useState(_scale ?? 0.1);
     const container_element = useRef<HTMLDivElement>(null)
     if (_scale == null)
@@ -34,12 +36,14 @@ function Card(props: CardProp) {
             return () => resize_observer.disconnect();
         }, [container_element.current])
 
-    const background = `${asset_prefix}/yugioh/image/card-${decide_backend(card.type)}.png`
+    const background = `${asset_prefix}/yugioh/image/card-${decide_backend(card.type, extend)}.png`
     const is_monster = (card.type & Type.Monster) > 0
     const is_pendlum = (card.type & Type.Pendulum) > 0
     const is_link = (card.type & Type.Link) > 0
     const is_normal = (card.type & Type.Normal) > 0
+    const is_no_atk = card.attack == null
     const pendulum_appendix = is_pendlum ? '-pendulum' : ''
+    const pendulum_asset_appendix = (extend && is_pendlum && (card.type & Type.Trap) > 0) ? '-oscillulam' : pendulum_appendix
     const card_image = image ?? card.image;
     const devolution = !(props.furigana ?? lang == Language.JP);
     const brackets = BRACKET_TEXTS[lang];
@@ -58,12 +62,12 @@ function Card(props: CardProp) {
             <link rel="stylesheet" type="text/css" href={`${asset_prefix}/yugioh/font/ygo-font.css`} />
             <link rel="stylesheet" type="text/css" href={`${asset_prefix}/custom-font/custom-font.css`} />
 
-            <Name class={`name name-${lang} ${is_white_name(card.type) ? 'name-white' : ''}`} devolution={devolution} scale={name_scale} color={card.name_color}>{card.name}</Name>
+            <Name class={`name name-${lang} ${is_white_name(card.type, extend) ? 'name-white' : ''}`} devolution={devolution} scale={name_scale} color={card.name_color}>{card.name}</Name>
             <Attribute {...props} />
             { is_link ? null : is_monster ? <Levels {...props} /> 
               : <Types lang={lang} asset_prefix={asset_prefix} devolution={devolution} {...decide_type_text(card.type, lang)} /> }
-            { card_image && <img class={`image${pendulum_appendix}`} src={card_image} /> }
-            <img class={`mask${pendulum_appendix}`} src={`${asset_prefix}/yugioh/image/card-mask${pendulum_appendix}.png`} />
+            {card_image && <img class={`image${pendulum_appendix}`} src={card_image} /> }
+            <img class={`mask${pendulum_appendix}`} src={`${asset_prefix}/yugioh/image/card-mask${pendulum_asset_appendix}.png`} />
             { is_pendlum && <>
                 { card.lscale && <div class="scale scale-left">{card.lscale}</div> }
                 { card.rscale && <div class="scale scale-right">{card.rscale}</div> }
@@ -74,7 +78,7 @@ function Card(props: CardProp) {
             { card.pack_info && <div class={`pack-info${is_pendlum ? ' pack-info-pendulum' : ''}${is_link ? ' pack-info-link' : ''}`}>{card.pack_info}</div> }
             { is_link && <LinkMarker linkmarker={card.defense ?? 0} {...props} /> }
             { card.twentieth && <img class="twentieth" src={`${asset_prefix}/yugioh/image/twentieth.png`} />}
-            <EffectDescription class={`description description-${lang} ${is_normal ? 'description-normal' : ''}`} flag={card.desc} scale={desc_scale}>
+            <EffectDescription class={`description description-${lang} ${is_normal ? 'description-normal' : ''}${is_no_atk ? ' description-no-atk' : ''}`} flag={card.desc} scale={desc_scale}>
                 {card.subtype_text && <div class="subtype"><div class="wrapper">{brackets[0]}</div><Furigana devolution={devolution}>{card.subtype_text}</Furigana><div class="wrapper">{brackets[1]}</div></div> }
                 <Furigana class="effect" devolution={devolution}>{card.desc}</Furigana>
                 { card.flavor_text && <div class="flavor">{card.flavor_text}</div> }

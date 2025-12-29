@@ -19,6 +19,8 @@
   lang={Language.zh_CN} 
   asset_prefix="https://xxx" 
   furigana?
+  fullframe?
+  extend?
 
   ...DivElements 
 />
@@ -29,12 +31,20 @@
 + `lang`, 语言（`Data.Language`枚举）
 + `asset_prefix`, 图片源，请将[yugioh-card的静态文件](https://github.com/kooriookami/yugioh-card/tree/master/src/assets/yugioh-card/yugioh)部署至合适的位置。本项目暂无分叉。
 + `furigana`, 是否强制启用振假名渲染。如果未强制启用，仅在`lang`设为`JP`时强制启用。
++ `fullframe`，是否采用全框卡
++ `extend`，是否启用拓展卡
 
 #### 缩放参数
 + `scale`, 整张卡片的缩放。不设置的场合，会根据所在容器自动缩放。
 + `name_scale`, 卡名的横向缩放。不设置的场合，会根据剩余长度自动缩放。
 + `desc_scale`, 卡片效果的字体大小缩放。不设置的场合，会根据文本长度自动缩放（会闪烁）。最小缩放至0.5倍。
 + `pdesc_scale`, 灵摆效果的字体大小缩放。不设置的场合，会根据文本长度自动缩放（会闪烁）。最小缩放至0.5倍。
+
+#### 拓展卡片
+拓展卡片是指现实的游戏王中不存在的卡片。    
+当前拓展卡片有：
++ 对于`type`有灵摆和陷阱标签的卡片，会渲染为下半边为红色的卡片
++ 对于`extra`包含`winged-dragon|tormentor|sky-dragon|`的卡片，会使用对应神色的背景。
 
 #### `Data.Card` 对象
 字段名|类型|说明
@@ -59,6 +69,7 @@ copyright?|'auto'&#124;'sc'&#124;'jp'&#124;'en'|版权文字，`auto`则根据`l
 laser?|'laser1'&#124;'laser2'&#124;'laser3'&#124;'laser4'|激光镭射标识
 rare?|'dt'&#124;'ur'&#124;'gr'&#124;'hr'&#124;'ser'&#124;'gser'&#124;'pser'|罕贵
 twentieth?|boolean|20周年标记
+meta?|any[]|额外信息
 
 ### 日语注音
 使用`[汉字(平假名)]`和`{汉字(片假名)}`进行注音。    

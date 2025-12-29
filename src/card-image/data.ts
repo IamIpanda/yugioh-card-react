@@ -33,6 +33,8 @@ type Card = {
     laser?: 'laser1' | 'laser2' | 'laser3' | 'laser4'
     rare?: 'dt' | 'ur' | 'gr' | 'hr' | 'ser' | 'gser' | 'pser'
     twentieth? : boolean
+
+    metas: any[]
 }
 
 enum Type {
@@ -84,8 +86,15 @@ enum Linkmarker {
     TopRight = 256,
 }
 
-function decide_backend(type: Type, extend?: boolean): String {
+function decide_backend(type: Type, metas?: any[], extend?: boolean, full_frame?: boolean): String {
     let answer = ""
+    if (extend && metas)
+        for (const meta of metas)
+            switch (meta) {
+                case 'winged-dragon': return 'winged-dragon'
+                case 'tormentor':     return 'tormentor'
+                case 'sky-dragon':    return 'sky-dragon'
+            }
     if ((type & Type.Synchro) > 0)      answer = "synchro"
     else if ((type & Type.Xyz) > 0)     answer = "xyz"
     else if ((type & Type.Fusion) > 0)  answer = "fusion"
@@ -102,12 +111,15 @@ function decide_backend(type: Type, extend?: boolean): String {
         pendulum_appendix = '-oscillulam'
         if (answer == 'trap') answer = 'effect'
     }
+    if (full_frame && pendulum_appendix === '')
+        pendulum_appendix = '-fullframe'
     return answer + pendulum_appendix
-    
 }
 
 function decide_attribute(type: Type, attribute?: Attribute): String | null {
-    if (attribute == null) return null
+    if ((type & Type.Spell) > 0 && (type & Type.Monster) == 0) return "spell"
+    else if ((type & Type.Trap) > 0 && (type & Type.Monster) == 0) return "trap"
+    else if (attribute == null) return null
     else if ((attribute & Attribute.Earth) > 0)  return "earth"
     else if ((attribute & Attribute.Water) > 0)  return "water"
     else if ((attribute & Attribute.Fire) > 0)   return "fire"
@@ -115,8 +127,6 @@ function decide_attribute(type: Type, attribute?: Attribute): String | null {
     else if ((attribute & Attribute.Light) > 0)  return "light"
     else if ((attribute & Attribute.Dark) > 0)   return "dark"
     else if ((attribute & Attribute.Divine) > 0) return "divine"
-    else if ((type & Type.Spell) > 0) return "spell"
-    else if ((type & Type.Trap) > 0) return "trap"
     else return null
 }
 
@@ -136,8 +146,9 @@ function decide_type_text(type: Type, lang: Language): {text: string, icon?: str
 }
 
 function is_white_name(type: Type, extend?: boolean) {
-    if (extend && (type & Type.Pendulum) > 0 && (type & Type.Trap) > 0) return false
-    return (type & (Type.Spell | Type.Trap | Type.Xyz | Type.Link)) > 0
+    let standard = Type.Spell | Type.Trap | Type.Xyz | Type.Link
+    if (extend && (type & Type.Pendulum) > 0 && (type & Type.Trap) > 0) standard -= Type.Trap  
+    return (type & standard) > 0
 }
 
 const TYPE_TEXTS: { [key in Language]?: {[key in Type]?: string}} = {

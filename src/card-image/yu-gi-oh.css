@@ -58,6 +58,11 @@
     transform: scale(var(--card-scale), var(--card-scale)) translateX(-50%) translateY(-50%);
 }
 
+.yugioh-container .background {
+    top: 0px;
+    left: 0px;
+}
+
 .yugioh-container .name {
     position: absolute;
     top: 96px;
@@ -140,7 +145,7 @@
     top: 322px;
     left: 117px;
 }
-.yugioh-container .mask-pendulum {
+.yugioh-container .mask-pendulum, .yugioh-container .mask-fullframe {
     position: absolute;
     top: 342px;
     left: 68px;
@@ -153,12 +158,15 @@
     width: 1054px;
     height: 1054px;
 }
-.yugioh-container .image-pendulum {
+.yugioh-container .image-pendulum, .yugioh-container .image-fullframe {
     position: absolute;
     left: 94px;
     top: 364px;
     width: 1205px;
     height: auto;
+}
+.yugioh-container .image-fullframe {
+    z-index: -1;
 }
 
 .yugioh-container .pack-info {
@@ -169,7 +177,7 @@
     right: 148px;
 }
 
-.yugioh-container .pack-info.pack-info-pendulum {
+.yugioh-container .pack-info.pack-info-pendulum, .yugioh-container .pack-info.pack-info.pack-info-fullframe {
     top: 1859px;
     left: 116px;
 }
@@ -393,6 +401,9 @@
     font-family: ygo-password, serid;
     font-size: 40px;
 }
+.yugioh-container .code.code-pendulum.code-link, .yugioh-container .code.code-fullframe.code-link {
+    left: 176px;
+}
 
 .yugioh-container .linkmarker {
     position: absolute;
@@ -402,7 +413,6 @@
     top: 278px;
     left: 555px;
 }
-
 .yugioh-container .linkmarker.linkmarker-right-up {
     top: 299px;
     left: 1130px;
@@ -437,6 +447,86 @@
     top: 299px;
     left: 95px;
 }
+
+.yugioh-container .linkmarker.linkmarker-up {
+    top: 278px;
+    left: 555px;
+}
+.yugioh-container .linkmarker.linkmarker-right-up {
+    top: 299px;
+    left: 1130px;
+}
+
+.yugioh-container .linkmarker.linkmarker-right {
+    top: 761px;
+    left: 1223px;
+}
+
+.yugioh-container .linkmarker.linkmarker-right-down {
+    top: 1336px;
+    left: 1130px;
+}
+
+.yugioh-container .linkmarker.linkmarker-down {
+    top: 1428px;
+    left: 555px;
+}
+
+.yugioh-container .linkmarker.linkmarker-left-down {
+    top: 1336px;
+    left: 95px;
+}
+
+.yugioh-container .linkmarker.linkmarker-left {
+    top: 758px;
+    left: 71px;
+}
+
+.yugioh-container .linkmarker.linkmarker-left-up {
+    top: 299px;
+    left: 95px;
+}
+
+
+.yugioh-container .linkmarker.linkmarker-pendulum.linkmarker-up {
+    top: 264px;
+}
+
+.yugioh-container .linkmarker.linkmarker-pendulum.linkmarker-right-up {
+    top: 270px;
+    left: 1200px;
+}
+
+.yugioh-container .linkmarker.linkmarker-pendulum.linkmarker-right {
+    top: 1013px;
+    left: 1288px;
+}
+
+.yugioh-container .linkmarker.linkmarker-pendulum.linkmarker-right-down {
+    top: 1840px;
+    left: 1200px;
+}
+
+.yugioh-container .linkmarker.linkmarker-pendulum.linkmarker-down {
+    top: 1910px;
+    left: 555px;
+}
+
+.yugioh-container .linkmarker.linkmarker-pendulum.linkmarker-left-down {
+    top: 1840px;
+    left: 25px;
+}
+
+.yugioh-container .linkmarker.linkmarker-pendulum.linkmarker-left {
+    top: 1010px;
+    left: 1px;
+}
+
+.yugioh-container .linkmarker.linkmarker-pendulum.linkmarker-left-up {
+    top: 270px;
+    left: 25px;
+}
+
 
 .yugioh-container .copyright {
     position: absolute;

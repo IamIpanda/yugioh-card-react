@@ -90,10 +90,10 @@ let card4_precursor: Partial<Data.Card> = {
     rscale: 5,
     type: 16781345,
     attribute: 16,
-    level: 4,
+    level: 8,
     attack: 1850,
-    defense: 0,
-    pack_info: "CORE-JP025"
+    defense: 511,
+    pack_info: "CORE-JP025",
 }
 
 let card4_texts: Record<Language, Partial<Data.Card>> = {
@@ -111,10 +111,10 @@ let card4_texts: Record<Language, Partial<Data.Card>> = {
         subtype_text: 'Dragon/Pendulum/Tuner/Effect'
     },
     [Language.JP]: {
-        name: '[竜(りゅう)][剣(けん)][士(し)]ラスター[Ｐ(ペンドゥラム)]', 
+        name: '[竜(りゅう)][剣(けん)][士(し)]ラスター[\uff2f(オシリュラム)]', 
         desc: 'このカードを[素(そ)][材(ざい)]として、「[竜(りゅう)][剣(けん)][士(し)]」モンスター[以(い)][外(がい)]の[融(ゆう)][合(ごう)]・Ｓ・Ｘモンスターを[特(とく)][殊(しゅ)][召(しょう)][喚(かん)]する[事(こと)]はできない。', 
         pendulum_text: '①：１ターンに１[度(ど)]、もう[片(かた)][方(ほう)]の[自(じ)][分(ぶん)]のＰゾーンにカードが[存(そん)][在(ざい)]する[場(ば)][合(あい)]に[発(はつ)][動(どう)]できる。そのカードを[破(は)][壊(かい)]し、そのカードの[同(どう)][名(めい)]カード１[枚(まい)]をデッキから[手(て)][札(ふだ)]に[加(くわ)]える。',
-        subtype_text: 'ドラゴン[族(ぞく)]/ペンドゥラム/チューナー/[効(こう)][果(か)]'
+        subtype_text: 'ドラゴン[族(ぞく)]/オシリュラム/チューナー/[効(こう)][果(か)]'
     },
     [Language.KR]: {
         name: '룡검사 라스터P', 
@@ -131,6 +131,6 @@ export const App = () => {
         <Card asset_prefix="/assets" lang={lang} card={merge_card(card1_precursor, card1_texts, lang)} style={{ width: 'calc(25% - 5px)' }} />
         <Card asset_prefix="/assets" lang={lang} card={merge_card(card2_precursor, card2_texts, lang)} style={{ width: 'calc(25% - 5px)' }} />
         <Card asset_prefix="/assets" lang={lang} card={merge_card(card3_precursor, card3_texts, lang)} style={{ width: 'calc(25% - 5px)' }} />
-        <Card asset_prefix="/assets" lang={lang} card={merge_card(card4_precursor, card4_texts, lang)} style={{ width: 'calc(25% - 5px)' }} />
+        <Card asset_prefix="/assets" lang={lang} card={merge_card(card4_precursor, card4_texts, lang)} style={{ width: 'calc(25% - 5px)' }} extend />
     </div>
 }

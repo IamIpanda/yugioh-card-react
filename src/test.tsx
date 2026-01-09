@@ -18,7 +18,8 @@ let card1_precursor: Partial<Data.Card> = {
     level: 8,
     attack: 3000,
     defense: 2500,
-    pack_info: "SD25-SC001"
+    pack_info: "SD25-SC001",
+    metas: ['sky-dragon']
 }
 let card1_texts: Record<Language, Partial<Data.Card>> = {
     [Language.ZH_CN]: { name: '青眼白龙', desc: '以高攻击力著称的传说之龙。任何对手都能粉碎，其破坏力不可估量。', subtype_text: '龙族'},
@@ -32,7 +33,7 @@ let card1_texts: Record<Language, Partial<Data.Card>> = {
 let card2_precursor: Partial<Data.Card> = {
     code: 81439173,
     image: '/image/81439173.jpg',
-    type: 131074,
+    type: Data.Type.Spell + Data.Type.Ritual,
     pack_info: 'SJ2-029'
 }
 let card2_texts: Record<Language, Partial<Data.Card>> = {
@@ -88,11 +89,11 @@ let card4_precursor: Partial<Data.Card> = {
     image: '/image/92746535.jpg',
     lscale: 5,
     rscale: 5,
-    type: 16781345,
+    type: Data.Type.Monster+Data.Type.Pendulum+Data.Type.Trap,
     attribute: 16,
     level: 8,
     attack: 1850,
-    defense: 511,
+    defense: 0,
     pack_info: "CORE-JP025",
 }
 
@@ -130,7 +131,7 @@ export const App = () => {
     return <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
         <Card asset_prefix="/assets" lang={lang} card={merge_card(card1_precursor, card1_texts, lang)} style={{ width: 'calc(25% - 5px)' }} />
         <Card asset_prefix="/assets" lang={lang} card={merge_card(card2_precursor, card2_texts, lang)} style={{ width: 'calc(25% - 5px)' }} />
-        <Card asset_prefix="/assets" lang={lang} card={merge_card(card3_precursor, card3_texts, lang)} style={{ width: 'calc(25% - 5px)' }} />
+        <Card asset_prefix="/assets" lang={lang} card={merge_card(card3_precursor, card3_texts, lang)} style={{ width: 'calc(25% - 5px)' }} full_frame />
         <Card asset_prefix="/assets" lang={lang} card={merge_card(card4_precursor, card4_texts, lang)} style={{ width: 'calc(25% - 5px)' }} extend />
     </div>
 }

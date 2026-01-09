@@ -92,7 +92,7 @@ function Card(props: CardProp) {
             { is_monster && <img class="number-background" src={`${asset_prefix}/yugioh/image/${(card.type & Type.Link) > 0 ? 'atk-link.svg' : 'atk-def.svg'}`} />}
             { is_monster && <Number class="atk" num={card.attack ?? 0} />}
             { is_monster && <Number class={`${is_link ? "link" : "def"}`} num={(is_link ? card.level : card.defense) ?? 0} />}
-            { card.code && <div class={`code ${is_pendulum ? ' code-pendulum' : ''}${full_frame ? ' code-fullframe': ''}${is_link ? ' code-link' : ''}`}>{card.code}</div> }
+            { card.code && <div class={`code ${is_pendulum ? ' code-pendulum' : ''}${full_frame ? ' code-fullframe': ''}${is_link ? ' code-link' : ''}${is_white_name(card.type) ? ' code-white' : ''}`}>{card.code}</div> }
             { copyright && <img class={`copyright copyright-${copyright}`} src={`${asset_prefix}/yugioh/image/copyright-${copyright}-${is_white_name(card.type) ? 'white' : 'black'}.svg`} /> }
             { card.laser && <img class="laser" src={`${asset_prefix}/yugioh/image/${card.laser}.png`} /> }
             { card.rare && <img class={`rare rare-${card.rare}`} src={`${asset_prefix}/yugioh/image/rare-${card.rare}${is_pendulum ? '-pendulum' : ''}.png`} /> }
@@ -197,6 +197,7 @@ function EffectDescription(props: { scale?: number, min_scale?: number, flag: an
         useEffect(() => { setTimeout(shrink, 0) }, [])
         useEffect(() => { setScale(Math.min(1, scale + 0.05)); shrink() }, [props.children])
     }
+    useEffect(() => { if (_scale != null) setScale(_scale) }, [_scale])
     return <div {...rest_props} ref={element} style={{"--font-size-scale": scale}}>{props.children}</div>
 }
 

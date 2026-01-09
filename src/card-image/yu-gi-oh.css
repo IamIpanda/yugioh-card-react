@@ -404,6 +404,9 @@
 .yugioh-container .code.code-pendulum.code-link, .yugioh-container .code.code-fullframe.code-link {
     left: 176px;
 }
+.yugioh-container .code.code-white {
+    color: white;
+}
 
 .yugioh-container .linkmarker {
     position: absolute;

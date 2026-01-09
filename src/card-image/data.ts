@@ -87,33 +87,35 @@ enum Linkmarker {
 }
 
 function decide_backend(type: Type, metas?: any[], extend?: boolean, full_frame?: boolean): String {
-    let answer = ""
-    if (extend && metas)
+    let answer1 = null
+    let answer2 = null
+    let appendix = ""
+    if ((type & Type.Spell) > 0)     answer1 = "spell"
+    else if ((type & Type.Trap) > 0) answer1 = "trap"
+    else                             answer1 = "effect"
+
+    if ((type & Type.Synchro) > 0)      answer2 = "synchro"
+    else if ((type & Type.Xyz) > 0)     answer2 = "xyz"
+    else if ((type & Type.Fusion) > 0)  answer2 = "fusion"
+    else if ((type & Type.Ritual) > 0)  answer2 = "ritual"
+    else if ((type & Type.Normal) > 0)  answer2 = "normal"
+    else if ((type & Type.Token) > 0)   answer2 = "token"
+    else if ((type & Type.Link) > 0)    answer2 = "link"
+    if (metas)
         for (const meta of metas)
             switch (meta) {
-                case 'winged-dragon': return 'winged-dragon'
-                case 'tormentor':     return 'tormentor'
-                case 'sky-dragon':    return 'sky-dragon'
+                case 'winged-dragon': answer2 = 'winged-dragon'; break
+                case 'tormentor':     answer2 = 'tormentor'; break;
+                case 'sky-dragon':    answer2 = 'sky-dragon'; break;
             }
-    if ((type & Type.Synchro) > 0)      answer = "synchro"
-    else if ((type & Type.Xyz) > 0)     answer = "xyz"
-    else if ((type & Type.Fusion) > 0)  answer = "fusion"
-    else if ((type & Type.Ritual) > 0)  answer = "ritual"
-    else if ((type & Type.Normal) > 0)  answer = "normal"
-    else if ((type & Type.Token) > 0)   answer = "token"
-    else if ((type & Type.Link) > 0)    answer = "link"
-    else if ((type & Type.Spell) > 0)   answer = "spell"
-    else if ((type & Type.Trap) > 0)    answer = "trap"
-    else answer = "effect"
     const is_pendulum = (type & Type.Pendulum) > 0
-    let pendulum_appendix = is_pendulum ? "-pendulum" : ''
-    if (extend && is_pendulum && (type & Type.Trap) > 0) {
-        pendulum_appendix = '-oscillulam'
-        if (answer == 'trap') answer = 'effect'
-    }
-    if (full_frame && pendulum_appendix === '')
-        pendulum_appendix = '-fullframe'
-    return answer + pendulum_appendix
+    const is_oscillulam = is_pendulum && (type & Type.Trap) > 0 && extend
+    if (is_oscillulam) appendix = "-oscillulam"
+    else if (is_pendulum) appendix = "-pendulum"
+    else if (full_frame) appendix = "-fullframe"
+    
+    if (is_oscillulam) answer1 = "effect"
+    return (answer1 == 'effect' ? (answer2 ?? answer1) : answer1) + appendix
 }
 
 function decide_attribute(type: Type, attribute?: Attribute): String | null {

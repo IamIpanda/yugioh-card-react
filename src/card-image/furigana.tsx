@@ -1,4 +1,4 @@
-import { forwardRef, HTMLProps, Ref, useEffect, useState } from "preact/compat";
+import { forwardRef, type HTMLAttributes, type Ref, useEffect, useState } from "react";
 
 const FURIGANA_REGEXP = /([\[\{](.+?)\((.+?)\)[\]\}])|(.)/g
 function replacer(_0: string, p1: string, p2: string, p3: string, p4: string): string {
@@ -8,7 +8,7 @@ function replacer(_0: string, p1: string, p2: string, p3: string, p4: string): s
     else
         return `<ruby><rb>${p2}</rb><rt>${p3}</rt></ruby>`
 }
-function Furigana(prop: HTMLProps<HTMLDivElement> & { devolution?: boolean }, ref?: Ref<HTMLDivElement>) {
+function Furigana(prop: HTMLAttributes<HTMLDivElement> & { devolution?: boolean }, ref?: Ref<HTMLDivElement>) {
     const [inner_html, set_inner_html] = useState("");
     useEffect(() => {
         if (prop.children == null) return;
@@ -20,8 +20,8 @@ function Furigana(prop: HTMLProps<HTMLDivElement> & { devolution?: boolean }, re
     }, [prop.children])
     if (prop.devolution)
         return <div {...prop} ref={ref} />
-    let _class = prop.class == null ? 'furigana' : prop.class + ' furigana'
-    return <div {...prop} ref={ref} class={_class} dangerouslySetInnerHTML={{ __html: inner_html }} />
+    let _class = prop.className == null ? 'furigana' : prop.className + ' furigana'
+    return <div {...prop} ref={ref} className={_class} dangerouslySetInnerHTML={{ __html: inner_html }} />
 }
 
 const WrappedFurigana = forwardRef(Furigana)

@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks"
+import { useState } from "react"
 import { Language } from "./card-image/data"
 import { Card, Data } from "./main"
 import "./test.css"
@@ -23,6 +23,7 @@ let card1_precursor: Partial<Data.Card> = {
 }
 let card1_texts: Record<Language, Partial<Data.Card>> = {
     [Language.ZH_CN]: { name: '青眼白龙', desc: '以高攻击力著称的传说之龙。任何对手都能粉碎，其破坏力不可估量。', subtype_text: '龙族'},
+    [Language.ZH_YD]: { name: '青眼白龙', desc: '以高攻击力著称的传说之龙。任何对手都能粉碎，其破坏力不可估量。', subtype_text: '龙族'},
     [Language.ZH_TW]: { name: '青眼白龍', desc: '以高攻擊力著稱的傳說之龍。任何對手都能夠粉碎，其破壞力不可估量。', subtype_text: '龍族' },
     [Language.EN]: { name: 'Blue-Eyes White Dragon', desc: 'This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.', subtype_text: 'Dragon' },
     [Language.JP]: { name: '{青眼の白龍(ブルーアイズ・ホワイト・ドラゴン)}', desc: '[高(たか)]い[攻(こう)][撃(げき)][力(りょく)]を[誇(ほこ)]る[伝(でん)][説(せつ)]のドラゴン。どんな[相(あい)][手(て)]でも[粉(ふん)][砕(さい)]する、その[破(は)][壊(かい)][力(りょく)]は[計(はか)]り[知(し)]れない。', subtype_text: 'ドラゴン[族(ぞく)]／[通(つう)][常(じょう)]' },
@@ -38,9 +39,10 @@ let card2_precursor: Partial<Data.Card> = {
 }
 let card2_texts: Record<Language, Partial<Data.Card>> = {
     [Language.ZH_CN]: { name: '愚蠢的埋葬', desc: '①：从卡组把1只怪兽送去墓地。' },
+    [Language.ZH_YD]: { name: '愚蠢的埋葬', desc: '①：从卡组把1只怪兽送去墓地。' },
     [Language.ZH_TW]: { name: '愚蠢的埋葬', desc: '①：從卡組把1隻怪獸送去墓地。' },
     [Language.EN]: { name: 'Foolish Burial', desc: 'Send 1 monster from your Deck to the GY.' },
-    [Language.JP]: { name: 'おろかな[埋(まい)][葬(そう)]', desc: '①：デッキからモンスター１[体(たい)]を[墓(ぼ)][地(ち)]へ[送(おく)]る。' },
+    [Language.JP]: { name: 'おろかな[埋(まい)][葬(そう)]', desc: '①：デッキからモンスター１[体(たい)]を[墓(ぼ)][地(ち)]へ[送(おく)]る。', flavor_text: '「おろかな埋葬」は、デッキからモンスターを墓地へ送る魔法カード。' },
     [Language.KR]: { name: '어리석은 매장', desc: '①: 덱에서 몬스터 1장을 묘지로 보낸다.' },
     [Language.ASTRAL]: {}
 }
@@ -58,6 +60,11 @@ let card3_precursor: Partial<Data.Card> = {
 }
 let card3_texts: Record<Language, Partial<Data.Card>> = {
     [Language.ZH_CN]: {
+        name: 'S：P小夜', desc: '效果怪兽2只\n\
+这个卡名的①②的效果1回合各能使用1次。\n\
+①：这张卡用融合·同调·超量·连接怪兽的其中任意种为素材作连接召唤的场合，以自己或对方的场上·墓地1张卡为对象才能发动。那张卡除外。这个回合，自己怪兽不能直接攻击。\n\
+②：对方的效果发动时，以包含自己场上的怪兽的场上2只表侧表示怪兽为对象才能发动。那2只怪兽直到结束阶段除外。', subtype_text: '战士族/连接/效果' },
+    [Language.ZH_YD]: {
         name: 'S：P小夜', desc: '效果怪兽2只\n\
 这个卡名的①②的效果1回合各能使用1次。\n\
 ①：这张卡用融合·同调·超量·连接怪兽的其中任意种为素材作连接召唤的场合，以自己或对方的场上·墓地1张卡为对象才能发动。那张卡除外。这个回合，自己怪兽不能直接攻击。\n\
@@ -104,6 +111,12 @@ let card4_texts: Record<Language, Partial<Data.Card>> = {
         subtype_text: '龙族／灵摆／调整／效果',
         pendulum_text: "①：1回合1次，另一边的自己的灵摆区域有卡存在的场合才能发动。那张卡破坏，把1张那张卡的同名卡从卡组加入手卡。",
     },
+    [Language.ZH_YD]: {
+        name: '龙剑士 光辉星·灵摆',
+        desc: '不能用这张卡为素材把「龙剑士」怪兽以外的融合·同调·超量怪兽特殊召唤。',
+        subtype_text: '龙族／灵摆／调整／效果',
+        pendulum_text: "①：1回合1次，另一边的自己的灵摆区域有卡存在的场合才能发动。那张卡破坏，把1张那张卡的同名卡从卡组加入手卡。",
+    },
     [Language.ZH_TW]: { name: '' },
     [Language.EN]: {
         name: 'Luster Pendulum, the Dracoslayer', 
@@ -127,7 +140,7 @@ let card4_texts: Record<Language, Partial<Data.Card>> = {
 }
 
 export const App = () => {
-    let [lang, _set_lang] = useState(Language.JP)
+    let [lang, _set_lang] = useState(Language.ZH_YD)
     return <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
         <Card asset_prefix="/assets" lang={lang} card={merge_card(card1_precursor, card1_texts, lang)} style={{ width: 'calc(25% - 5px)' }} />
         <Card asset_prefix="/assets" lang={lang} card={merge_card(card2_precursor, card2_texts, lang)} style={{ width: 'calc(25% - 5px)' }} />

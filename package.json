@@ -1,6 +1,6 @@
 {
   "name": "yugioh-card-react",
-  "version": "0.3.6",
+  "version": "0.4.0",
   "author": "IamIpanda",
   "license": "AGPL-3.0-only",
   "repository": "https://github.com/IamIpanda/yugioh-card-react",
@@ -12,8 +12,10 @@
   },
   "main": "./dist/yugioh-card.umd.cjs",
   "module": "./dist/yugioh-card.js",
+  "types": "./dist/yugioh-card.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/yugioh-card.d.ts",
       "import": "./dist/yugioh-card.js",
       "require": "./dist/yugioh-card.umd.cjs"
     },
@@ -26,12 +28,19 @@
     "./dist/*",
     "README.md"
   ],
-  "dependencies": {
-    "preact": "^10.24.1"
+  "peerDependencies": {
+    "react": ">=16.8",
+    "react-dom": ">=16.8"
+  },
+  "peerDependenciesMeta": {
+    "react": { "optional": true },
+    "react-dom": { "optional": true }
   },
   "devDependencies": {
-    "@preact/preset-vite": "^2.9.1",
     "@types/node": "^22.7.7",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "preact": "^10.24.1",
     "typescript": "^5.5.3",
     "vite": "^5.4.8",
     "vite-plugin-dts": "^4.2.4"

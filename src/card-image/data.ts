@@ -1,5 +1,7 @@
 enum Language {
     ZH_CN = "sc",
+    // ZH_CN, but with different font, used for real SC cards
+    ZH_YD = "yd",
     ZH_TW = "tc",
     EN = "en",
     JP = "jp",
@@ -179,6 +181,7 @@ const TYPE_TEXTS: { [key in Language]?: {[key in Type]?: string}} = {
 const BRACKET_TEXTS: Record<Language, [String, String]> = {
     [Language.EN]: ['[', ']'],
     [Language.ZH_CN]: ['【', '】'],
+    [Language.ZH_YD]: ['【', '】'],
     [Language.ZH_TW]: ['【', '】'],
     [Language.JP]: ['【', '】'],
     [Language.KR]: ['[', ']'],

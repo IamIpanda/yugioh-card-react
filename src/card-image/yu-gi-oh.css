@@ -80,6 +80,9 @@
 .yugioh-container .name.name-sc {
     font-family: custom1, serif
 }
+.yugioh-container .name.name-yd {
+    font-family: ygo-sc, serif;
+}
 .yugioh-container .name.name-tc {
     font-family: ygo-tc,'楷体', serif;
 }
@@ -337,6 +340,9 @@
 }
 .yugioh-container .description.description-sc {
     font-family: custom1, serif;
+}
+.yugioh-container .description.description-yd {
+    font-family: ygo-sc, serif;
 }
 .yugioh-container .description.description-tc {
     font-family: ygo-tc, '楷体', serif;

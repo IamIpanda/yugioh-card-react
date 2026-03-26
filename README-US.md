@@ -8,8 +8,6 @@ That's a simulation for [yugioh-card](https://www.npmjs.com/package/yugioh-card)
 Only HTML + CSS is used, no Canvas.    
 Currently, only standard Yu-Gi-Oh! card is supported
 
-This project uses preact. Due to some design choices in React, full compatibility is not provided. Maybe in the future there will be a React-compatible build.
-
 ## Usage
 ### React
 ```

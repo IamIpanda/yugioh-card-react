@@ -1,10 +1,16 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
-import preact from '@preact/preset-vite'
 import dts from 'vite-plugin-dts'
 
 export default defineConfig(({ command }) => ({
   publicDir: command === 'build' ? false : 'public',
+  resolve: command === 'serve' ? {
+    alias: {
+      'react': 'preact/compat',
+      'react-dom': 'preact/compat',
+      'react/jsx-runtime': 'preact/jsx-runtime',
+    }
+  } : undefined,
   build: {
     minify: false,
     lib: {
@@ -15,15 +21,12 @@ export default defineConfig(({ command }) => ({
     rollupOptions: {
       external: [
         /(src\/test\..*)/,
-        "preact",
-        "preact/compat",
-        "react",
-        "react-dom",
-        "react/jsx-runtime"
+        /^react(\/.*)?$/,
+        /^react-dom(\/.*)?$/,
       ],
     },
   },
-  plugins: [preact(), dts({
+  plugins: [dts({
     rollupTypes: true,
     tsconfigPath: "./tsconfig.app.json",
   })]

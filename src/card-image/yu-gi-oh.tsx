@@ -40,6 +40,7 @@ function Card(props: CardProp) {
     const background = `${asset_prefix}/yugioh/image/card-${decide_backend(card.type, card.metas, extend, full_frame)}.png`
     const is_monster = (card.type & Type.Monster) > 0
     const is_pendulum = (card.type & Type.Pendulum) > 0
+    const is_xyz = (card.type & Type.Xyz) > 0
     const is_link = (card.type & Type.Link) > 0
     const is_normal = (card.type & Type.Normal) > 0
     const is_no_atk = card.attack == null
@@ -92,7 +93,7 @@ function Card(props: CardProp) {
             { is_monster && <img class="number-background" src={`${asset_prefix}/yugioh/image/${(card.type & Type.Link) > 0 ? 'atk-link.svg' : 'atk-def.svg'}`} />}
             { is_monster && <Number class="atk" num={card.attack ?? 0} />}
             { is_monster && <Number class={`${is_link ? "link" : "def"}`} num={(is_link ? card.level : card.defense) ?? 0} />}
-            { card.code && <div class={`code ${is_pendulum ? ' code-pendulum' : ''}${full_frame ? ' code-fullframe': ''}${is_link ? ' code-link' : ''}${is_white_name(card.type) ? ' code-white' : ''}`}>{card.code}</div> }
+            { card.code && <div class={`code ${is_pendulum ? ' code-pendulum' : ''}${full_frame ? ' code-fullframe': ''}${is_link ? ' code-link' : ''}${(is_xyz && !is_pendulum) ? ' code-white' : ''}`}>{card.code}</div> }
             { copyright && <img class={`copyright copyright-${copyright}`} src={`${asset_prefix}/yugioh/image/copyright-${copyright}-${is_white_name(card.type) ? 'white' : 'black'}.svg`} /> }
             { card.laser && <img class="laser" src={`${asset_prefix}/yugioh/image/${card.laser}.png`} /> }
             { card.rare && <img class={`rare rare-${card.rare}`} src={`${asset_prefix}/yugioh/image/rare-${card.rare}${is_pendulum ? '-pendulum' : ''}.png`} /> }

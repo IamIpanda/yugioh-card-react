@@ -44,7 +44,6 @@ function Card(props: CardProp) {
     const is_xyz = (card.type & Type.Xyz) > 0
     const is_link = (card.type & Type.Link) > 0
     const is_normal = (card.type & Type.Normal) > 0
-    const is_no_atk = card.attack == null
     let pendulum_appendix = (is_pendulum) ? '-pendulum' : ''
     let pendulum_asset_appendix = (extend && is_pendulum && (card.type & Type.Trap) > 0) ? '-oscillulam' : pendulum_appendix
     if (full_frame && !is_pendulum) {
@@ -87,7 +86,7 @@ function Card(props: CardProp) {
             { card.pack_info && <div className={`pack-info${is_pendulum ? ' pack-info-pendulum' : ''}${is_link ? ' pack-info-link' : ''}${full_frame ? ' pack-info-fullframe': ''}`}>{card.pack_info}</div> }
             { is_link && <LinkMarker linkmarker={card.defense ?? 0} pendulum={is_pendulum || full_frame} {...props} /> }
             { card.twentieth && <img className="twentieth" src={`${asset_prefix}/yugioh/image/twentieth.png`} />}
-            <EffectDescription className={`description description-${_lang} ${is_normal ? 'description-normal' : ''}${is_no_atk ? ' description-no-atk' : ''}`} flag={card.desc} scale={desc_scale}>
+            <EffectDescription className={`description description-${_lang} ${is_normal ? 'description-normal' : ''}${is_monster ? '' : 'description-non-monster'}`} flag={card.desc} scale={desc_scale}>
                 {card.subtype_text && <div className="subtype"><div className="wrapper">{brackets[0]}</div><Furigana devolution={devolution}>{card.subtype_text}</Furigana><div className="wrapper">{brackets[1]}</div></div> }
                 <Furigana className="effect" devolution={devolution}>{card.desc}</Furigana>
                 { card.flavor_text && <div className="flavor">{card.flavor_text}</div> }

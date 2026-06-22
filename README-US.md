@@ -27,10 +27,26 @@ Currently, only standard Yu-Gi-Oh! card is supported
 + `card`, `Data.Card` object
 + `image`, Card image
 + `lang`, Card Language (Enum `Data.Language`)
-+ `asset_prefix`, image source. Please deploy the [yugioh-card static files](https://github.com/kooriookami/yugioh-card/tree/master/src/assets/yugioh-card/yugioh) to an appropriate location. This project has no forks for now.
++ `asset_prefix`, Asset CDN prefix. Defaults to jsDelivr CDN when not set.
++ `assets`, Asset path override map (`Record<string, string>`). Takes priority over `asset_prefix` concatenation.
 + `furigana`, Force render furigana inner text. Otherwise, only enabled when `lang` is `JP`.
 + `fullframe`, Use full-frame card style
++ `overframe`, Use over-frame card style
 + `extend`, Enable extended (fan-made) cards
+
+#### Entry & Assets
+`asset_prefix` defaults to jsDelivr CDN — no manual setup needed:
+
+```
+https://cdn.jsdelivr.net/gh/IamIpanda/yugioh-card-react@master/public/assets/
+```
+
+To self-host, deploy `public/assets/` to any static server and pass `asset_prefix`.
+
+Assets are sourced from:
++ Original yugioh-cards project
++ Over-frame resources from mercury233's fork
++ Extended card resources are self-made.
 
 #### Scale Parameters
 + `scale`, Scale for the whole card. When undefined will auto scale to fit.
@@ -74,4 +90,4 @@ Use `[Kanji (Hiragana)]` and `{Kanji (Katakana)}` for furigana.
 The content wrapped in square brackets should be center-aligned, and the content wrapped in curly braces should be justified (left and right aligned); Please refer to the actual alignment on the card.
 
 ### Notes
-The font for Simplified Chinese cards is `custom1`. If you need to use `ygo-sc` or other fonts, please modify the CSS file yourself.
+The font for Simplified Chinese cards is `custom1`. Set language to `ZH_YD` for Simplified-Chinese-style cards.

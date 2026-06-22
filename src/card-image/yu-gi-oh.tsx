@@ -6,13 +6,13 @@ import { Furigana } from "./furigana"
 type Config = {
     lang: Language
     furigana?: boolean
-    asset_prefix: String
+    asset_prefix?: String
 }
 
 type CardProp = {
     card: DataCard,
     image?: string | null
-    
+
     scale?: number,
     name_scale?: number,
     desc_scale?: number,
@@ -20,10 +20,14 @@ type CardProp = {
 
     extend?: boolean
     full_frame?: boolean
+    over_frame?: boolean
 } & Config & Omit<HTMLAttributes<HTMLDivElement>, 'lang'>
 
+const DEFAULT_ASSET_PREFIX = "https://cdn.jsdelivr.net/gh/IamIpanda/yugioh-card-react@master/public/assets"
+
 function Card(props: CardProp) {
-    const { card, image, asset_prefix, lang: _lang, scale: _scale, name_scale, desc_scale, pdesc_scale, extend, full_frame, ...rest_props } = props;
+    const { card, image, lang: _lang, scale: _scale, name_scale, desc_scale, pdesc_scale, extend, full_frame, over_frame, ...rest_props } = props;
+    const asset_prefix = props.asset_prefix ?? DEFAULT_ASSET_PREFIX;
     const lang = _lang == Language.ZH_YD ? Language.ZH_CN : _lang;
     const [scale, set_scale] = useState(_scale ?? 0.1);
     const container_element = useRef<HTMLDivElement>(null)
@@ -50,6 +54,10 @@ function Card(props: CardProp) {
         pendulum_asset_appendix = '-fullframe'
         pendulum_appendix = '-fullframe'
     }
+    if (over_frame) {
+        pendulum_asset_appendix += '-overframe'
+        pendulum_appendix += '-overframe'
+    }
     const card_image = image ?? card.image;
     const devolution = !(props.furigana ?? lang == Language.JP);
     const brackets = BRACKET_TEXTS[lang];
@@ -63,47 +71,46 @@ function Card(props: CardProp) {
         [Language.KR]: 'jp'
     }[lang] : card.copyright
 
-
     return <div className="yugioh-container" {...rest_props} ref={container_element}>
         <div className={`card ${_scale == null ? 'card-auto' : ''}`} style={{ '--card-scale': scale } as CSSProperties} >
-            <img className="background" src={background} />
+            <img className={`background${over_frame ? ' background-overframe' : ''}`} src={background} />
             <link rel="stylesheet" type="text/css" href={`${asset_prefix}/yugioh/font/ygo-font.css`} />
             <link rel="stylesheet" type="text/css" href={`${asset_prefix}/custom-font/custom-font.css`} />
 
             <Name className={`name name-${_lang} ${is_white_name(card.type, extend) ? 'name-white' : ''}`} devolution={devolution} scale={name_scale} color={card.name_color}>{card.name}</Name>
-            <Attribute {...props} />
-            { is_link ? null : is_monster ? <Levels {...props} /> 
-              : <Types lang={lang} asset_prefix={asset_prefix} devolution={devolution} {...decide_type_text(card.type, lang)} /> }
-            {card_image && <img className={`image${pendulum_appendix}`} src={card_image} /> }
+            <Attribute card={card} lang={lang} asset_prefix={asset_prefix} />
+            {is_link ? null : is_monster ? <Levels card={card} lang={lang} asset_prefix={asset_prefix} />
+                : <Types lang={lang} asset_prefix={asset_prefix} devolution={devolution} {...decide_type_text(card.type, lang)} />}
+            {card_image && <img className={`image${pendulum_appendix}`} src={card_image} />}
             <img className={`mask${pendulum_appendix}`} src={`${asset_prefix}/yugioh/image/card-mask${pendulum_asset_appendix}.png`} />
-            { is_pendulum && <>
-                { card.lscale && <div className="scale scale-left">{card.lscale}</div> }
-                { card.rscale && <div className="scale scale-right">{card.rscale}</div> }
+            {is_pendulum && <>
+                {card.lscale && <div className="scale scale-left">{card.lscale}</div>}
+                {card.rscale && <div className="scale scale-right">{card.rscale}</div>}
                 {card.pendulum_text && <EffectDescription className={`description description-${_lang} description-pendulum`} flag={card.pendulum_text} scale={pdesc_scale}>
                     <Furigana devolution={devolution}>{card.pendulum_text}</Furigana>
                 </EffectDescription>}
             </>}
-            { card.pack_info && <div className={`pack-info${is_pendulum ? ' pack-info-pendulum' : ''}${is_link ? ' pack-info-link' : ''}${full_frame ? ' pack-info-fullframe': ''}`}>{card.pack_info}</div> }
-            { is_link && <LinkMarker linkmarker={card.defense ?? 0} pendulum={is_pendulum || full_frame} {...props} /> }
-            { card.twentieth && <img className="twentieth" src={`${asset_prefix}/yugioh/image/twentieth.png`} />}
+            {card.pack_info && <div className={`pack-info${is_pendulum ? ' pack-info-pendulum' : ''}${is_link ? ' pack-info-link' : ''}${full_frame ? ' pack-info-fullframe' : ''}`}>{card.pack_info}</div>}
+            {is_link && <LinkMarker linkmarker={card.defense ?? 0} pendulum={is_pendulum || full_frame} lang={lang} asset_prefix={asset_prefix} />}
+            {card.twentieth && <img className="twentieth" src={`${asset_prefix}/yugioh/image/twentieth.png`} />}
             <EffectDescription className={`description description-${_lang} ${is_normal ? 'description-normal' : ''}${is_monster ? '' : 'description-non-monster'}`} flag={card.desc} scale={desc_scale}>
-                {card.subtype_text && <div className="subtype"><div className="wrapper">{brackets[0]}</div><Furigana devolution={devolution}>{card.subtype_text}</Furigana><div className="wrapper">{brackets[1]}</div></div> }
+                {card.subtype_text && <div className="subtype"><div className="wrapper">{brackets[0]}</div><Furigana devolution={devolution}>{card.subtype_text}</Furigana><div className="wrapper">{brackets[1]}</div></div>}
                 <Furigana className="effect" devolution={devolution}>{card.desc}</Furigana>
-                { card.flavor_text && <div className="flavor">{card.flavor_text}</div> }
+                {card.flavor_text && <div className="flavor">{card.flavor_text}</div>}
             </EffectDescription>
-            { is_monster && <img className="number-background" src={`${asset_prefix}/yugioh/image/${(card.type & Type.Link) > 0 ? 'atk-link.svg' : 'atk-def.svg'}`} />}
-            { is_monster && <Number className="atk" num={card.attack ?? 0} />}
-            { is_monster && <Number className={`${is_link ? "link" : "def"}`} num={(is_link ? card.level : card.defense) ?? 0} />}
-            { card.code && <div className={`code ${is_pendulum ? ' code-pendulum' : ''}${full_frame ? ' code-fullframe': ''}${is_link ? ' code-link' : ''}${(is_xyz && !is_pendulum) ? ' code-white' : ''}`}>{card.code}</div> }
-            { copyright && <img className={`copyright copyright-${copyright}`} src={`${asset_prefix}/yugioh/image/copyright-${copyright}-${is_white_name(card.type) ? 'white' : 'black'}.svg`} /> }
-            { card.laser && <img className="laser" src={`${asset_prefix}/yugioh/image/${card.laser}.png`} /> }
-            { card.rare && <img className={`rare rare-${card.rare}`} src={`${asset_prefix}/yugioh/image/rare-${card.rare}${is_pendulum ? '-pendulum' : ''}.png`} /> }
+            {is_monster && <img className="number-background" src={`${asset_prefix}/yugioh/image/${(card.type & Type.Link) > 0 ? 'atk-link.svg' : 'atk-def.svg'}`} />}
+            {is_monster && <Number className="atk" num={card.attack ?? 0} />}
+            {is_monster && <Number className={`${is_link ? "link" : "def"}`} num={(is_link ? card.level : card.defense) ?? 0} />}
+            {card.code && <div className={`code ${is_pendulum ? ' code-pendulum' : ''}${full_frame ? ' code-fullframe' : ''}${is_link ? ' code-link' : ''}${(is_xyz && !is_pendulum) ? ' code-white' : ''}`}>{card.code}</div>}
+            {copyright && <img className={`copyright copyright-${copyright}`} src={`${asset_prefix}/yugioh/image/copyright-${copyright}-${is_white_name(card.type) ? 'white' : 'black'}.svg`} />}
+            {card.laser && <img className="laser" src={`${asset_prefix}/yugioh/image/${card.laser}.png`} />}
+            {card.rare && <img className={`rare rare-${card.rare}`} src={`${asset_prefix}/yugioh/image/rare-${card.rare}${is_pendulum ? '-pendulum' : ''}.png`} />}
         </div>
     </div>
 }
 
 function Name(props: Omit<HTMLAttributes<HTMLDivElement>, 'color'> & { devolution: boolean, scale?: number, color?: string | string[] }) {
-    let { scale: _scale, color, ...rest_props } = props;
+    let { scale: _scale, color, devolution, children, ...rest_props } = props;
     let [scale, setScale] = useState(_scale ?? 1);
     let element = useRef<HTMLDivElement>(null)
     if (_scale == null) {
@@ -113,7 +120,7 @@ function Name(props: Omit<HTMLAttributes<HTMLDivElement>, 'color'> & { devolutio
                 setScale(element.current.offsetWidth / element.current.scrollWidth)
         }
         useEffect(shrink, [element.current, scale])
-        useEffect(() => { setScale(1); shrink() }, [props.children])
+        useEffect(() => { setScale(1); shrink(); }, [props.children])
     }
     let style = props.style ?? {} as any
     let name_style = {}
@@ -121,12 +128,14 @@ function Name(props: Omit<HTMLAttributes<HTMLDivElement>, 'color'> & { devolutio
         name_style = {}
     else if (typeof color == 'string')
         name_style = { color: color }
-    else 
+    else
         name_style = { background: `linear-gradient(${color.join(', ')})`, backgroundClip: 'text', '-webkit-background-clip': 'text', color: 'transparent' }
-    return <Furigana {...rest_props} ref={element} style={{ transform: `scaleX(${scale})`, ...name_style, ...style }}>{props.children}</Furigana>
+    return <div {...rest_props} ref={element} style={style}>
+        <Furigana devolution={devolution} style={{ transform: `scaleX(${scale})`, transformOrigin: 'left', display: 'inline-block', ...name_style }}>{children}</Furigana>
+    </div>
 }
 
-function Types(props: {text: String, icon?: String, devolution?: boolean} & Config) {
+function Types(props: { text: String, icon?: String, devolution?: boolean } & Config) {
     if (props.text == null || props.text === "") return null;
     const wrappers = BRACKET_TEXTS[props.lang]
     return <div className={`type type-${props.lang}`}>
@@ -137,14 +146,15 @@ function Types(props: {text: String, icon?: String, devolution?: boolean} & Conf
     </div>
 }
 
-function Levels(props: {card: DataCard} & Config) {
+function Levels(props: { card: DataCard } & Config) {
     const xyz = (props.card.type & Type.Xyz) > 0
+    const starUrl = `${props.asset_prefix}/yugioh/image/${xyz ? 'rank.png' : 'level.png'}`
     return <div className={`level ${xyz ? "level-xyz" : ''} level-${props.card.level}`}>
-        {Array(props.card.level).fill(<img className="star" src={`${props.asset_prefix}/yugioh/image/${xyz ? 'rank.png' : 'level.png'}`} />)}
+        {Array(props.card.level).fill(<img className="star" src={starUrl} />)}
     </div>
 }
 
-function Attribute(props: {card: DataCard} & Config) {
+function Attribute(props: { card: DataCard } & Config) {
     let lang = props.lang;
     let appendix = ""
     if (lang == Language.ZH_YD) lang = Language.ZH_CN
@@ -156,38 +166,39 @@ function Attribute(props: {card: DataCard} & Config) {
     return <img className="attribute" src={`${props.asset_prefix}/yugioh/image/attribute-${attribute}${appendix}.png`} />
 }
 
-function Number(props: {num: number, className?: string}) {
+function Number(props: { num: number, className?: string }) {
     let text = props.num.toString();
     if (props.num == -1) text = "∞"
     if (props.num == -2) text = "?"
-    return <div className={`number ${props.className}`}>{text}</div> 
+    return <div className={`number ${props.className}`}>{text}</div>
 }
 
-function LinkMarker(props: {linkmarker: number, pendulum?: boolean} & Config) {
+function LinkMarker(props: { linkmarker: number, pendulum?: boolean } & Config) {
     let basic_link_class = "linkmarker"
     if (props.pendulum) basic_link_class += " linkmarker-pendulum"
+    const prefix = props.asset_prefix
     return <>
-        <img className={`${basic_link_class} linkmarker-up`}         src={`${props.asset_prefix}/yugioh/image/arrow-up-off.png`} />
-        <img className={`${basic_link_class} linkmarker-right-up`}   src={`${props.asset_prefix}/yugioh/image/arrow-right-up-off.png`} />
-        <img className={`${basic_link_class} linkmarker-right`}      src={`${props.asset_prefix}/yugioh/image/arrow-right-off.png`} />
-        <img className={`${basic_link_class} linkmarker-right-down`} src={`${props.asset_prefix}/yugioh/image/arrow-right-down-off.png`} />
-        <img className={`${basic_link_class} linkmarker-down`}       src={`${props.asset_prefix}/yugioh/image/arrow-down-off.png`} />
-        <img className={`${basic_link_class} linkmarker-left-down`}  src={`${props.asset_prefix}/yugioh/image/arrow-left-down-off.png`} />
-        <img className={`${basic_link_class} linkmarker-left`}       src={`${props.asset_prefix}/yugioh/image/arrow-left-off.png`} />
-        <img className={`${basic_link_class} linkmarker-left-up`}   src={`${props.asset_prefix}/yugioh/image/arrow-left-up-off.png`} />
-        {(props.linkmarker & Linkmarker.Top) > 0         && <img className={`${basic_link_class} linkmarker-up`}         src={`${props.asset_prefix}/yugioh/image/arrow-up-on.png`} /> }
-        {(props.linkmarker & Linkmarker.TopRight) > 0    && <img className={`${basic_link_class} linkmarker-right-up`}   src={`${props.asset_prefix}/yugioh/image/arrow-right-up-on.png`} /> }
-        {(props.linkmarker & Linkmarker.Right) > 0       && <img className={`${basic_link_class} linkmarker-right`}      src={`${props.asset_prefix}/yugioh/image/arrow-right-on.png`} /> }
-        {(props.linkmarker & Linkmarker.BottomRight) > 0 && <img className={`${basic_link_class} linkmarker-right-down`} src={`${props.asset_prefix}/yugioh/image/arrow-right-down-on.png`} /> }
-        {(props.linkmarker & Linkmarker.Bottom) > 0      && <img className={`${basic_link_class} linkmarker-down`}       src={`${props.asset_prefix}/yugioh/image/arrow-down-on.png`} /> }
-        {(props.linkmarker & Linkmarker.BottomLeft) > 0  && <img className={`${basic_link_class} linkmarker-left-down`}  src={`${props.asset_prefix}/yugioh/image/arrow-left-down-on.png`} /> }
-        {(props.linkmarker & Linkmarker.Left) > 0        && <img className={`${basic_link_class} linkmarker-left`}       src={`${props.asset_prefix}/yugioh/image/arrow-left-on.png`} /> }
-        {(props.linkmarker & Linkmarker.TopLeft) > 0     && <img className={`${basic_link_class} linkmarker-left-up`}    src={`${props.asset_prefix}/yugioh/image/arrow-left-up-on.png`} /> }
+        <img className={`${basic_link_class} linkmarker-up`} src={`${prefix}/yugioh/image/arrow-up-off.png`} />
+        <img className={`${basic_link_class} linkmarker-right-up`} src={`${prefix}/yugioh/image/arrow-right-up-off.png`} />
+        <img className={`${basic_link_class} linkmarker-right`} src={`${prefix}/yugioh/image/arrow-right-off.png`} />
+        <img className={`${basic_link_class} linkmarker-right-down`} src={`${prefix}/yugioh/image/arrow-right-down-off.png`} />
+        <img className={`${basic_link_class} linkmarker-down`} src={`${prefix}/yugioh/image/arrow-down-off.png`} />
+        <img className={`${basic_link_class} linkmarker-left-down`} src={`${prefix}/yugioh/image/arrow-left-down-off.png`} />
+        <img className={`${basic_link_class} linkmarker-left`} src={`${prefix}/yugioh/image/arrow-left-off.png`} />
+        <img className={`${basic_link_class} linkmarker-left-up`} src={`${prefix}/yugioh/image/arrow-left-up-off.png`} />
+        {(props.linkmarker & Linkmarker.Top) > 0 && <img className={`${basic_link_class} linkmarker-up`} src={`${prefix}/yugioh/image/arrow-up-on.png`} />}
+        {(props.linkmarker & Linkmarker.TopRight) > 0 && <img className={`${basic_link_class} linkmarker-right-up`} src={`${prefix}/yugioh/image/arrow-right-up-on.png`} />}
+        {(props.linkmarker & Linkmarker.Right) > 0 && <img className={`${basic_link_class} linkmarker-right`} src={`${prefix}/yugioh/image/arrow-right-on.png`} />}
+        {(props.linkmarker & Linkmarker.BottomRight) > 0 && <img className={`${basic_link_class} linkmarker-right-down`} src={`${prefix}/yugioh/image/arrow-right-down-on.png`} />}
+        {(props.linkmarker & Linkmarker.Bottom) > 0 && <img className={`${basic_link_class} linkmarker-down`} src={`${prefix}/yugioh/image/arrow-down-on.png`} />}
+        {(props.linkmarker & Linkmarker.BottomLeft) > 0 && <img className={`${basic_link_class} linkmarker-left-down`} src={`${prefix}/yugioh/image/arrow-left-down-on.png`} />}
+        {(props.linkmarker & Linkmarker.Left) > 0 && <img className={`${basic_link_class} linkmarker-left`} src={`${prefix}/yugioh/image/arrow-left-on.png`} />}
+        {(props.linkmarker & Linkmarker.TopLeft) > 0 && <img className={`${basic_link_class} linkmarker-left-up`} src={`${prefix}/yugioh/image/arrow-left-up-on.png`} />}
     </>
 }
 
 function EffectDescription(props: { scale?: number, min_scale?: number, flag: any } & HTMLAttributes<HTMLDivElement>) {
-    let { flag, scale: _scale, min_scale = 0.5, ...rest_props } = props 
+    let { flag, scale: _scale, min_scale = 0.5, ...rest_props } = props
     let [scale, setScale] = useState(_scale ?? 1);
     let element = useRef<HTMLDivElement>(null);
     if (_scale == null) {
@@ -201,7 +212,7 @@ function EffectDescription(props: { scale?: number, min_scale?: number, flag: an
         useEffect(() => { setScale(Math.min(1, scale + 0.05)); shrink() }, [props.children])
     }
     useEffect(() => { if (_scale != null) setScale(_scale) }, [_scale])
-    return <div {...rest_props} ref={element} style={{"--font-size-scale": scale} as CSSProperties}>{props.children}</div>
+    return <div {...rest_props} ref={element} style={{ "--font-size-scale": scale } as CSSProperties}>{props.children}</div>
 }
 
 export {

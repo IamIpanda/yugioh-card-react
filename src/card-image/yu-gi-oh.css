@@ -32,7 +32,7 @@
 .yugioh-container .furigana .katakana rt {
     text-align-last: justify;
 }
-.yugioh-container .furigana rb {
+.yugioh-container .fur10igana rb {
     text-align: center;
     line-height: 1;
 }
@@ -62,12 +62,15 @@
     top: 0px;
     left: 0px;
 }
+.yugioh-container .background-overframe {
+    display: none;
+}
 
 .yugioh-container .name {
     position: absolute;
     top: 96px;
     left: 116px;
-    width: 1030px;
+    width: 1020px;
     height: 124px;
     font-size: 108px;
     white-space: nowrap;
@@ -153,6 +156,20 @@
     top: 342px;
     left: 68px;
 }
+.yugioh-container .mask-overframe {
+    position: absolute;
+    top: 1498px;
+    left: 77px;
+    width: 1240px;
+    height: auto;
+}
+.yugioh-container .mask-pendulum-overframe {
+    position: absolute;
+    top: 1250px;
+    left: 77px;
+    width: 1240px;
+    height: auto;
+}
 
 .yugioh-container .image {
     position: absolute;
@@ -169,6 +186,14 @@
     height: auto;
 }
 .yugioh-container .image-fullframe {
+    z-index: -1;
+}
+.yugioh-container .image-overframe, .yugioh-container .image-pendulum-overframe {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 1394px;
+    height: auto;
     z-index: -1;
 }
 

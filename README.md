@@ -27,10 +27,17 @@
 + `card`, `Data.Card`对象（下详）
 + `image`, 卡片图像
 + `lang`, 语言（`Data.Language`枚举）
-+ `asset_prefix`, 图片源，请将[yugioh-card的静态文件](https://github.com/kooriookami/yugioh-card/tree/master/src/assets/yugioh-card/yugioh)部署至合适的位置。本项目暂无分叉。
++ `asset_prefix`, 资源文件的CDN前缀。不设置时默认使用 jsDelivr CDN。
++ `assets`，资源文件映射表（`Record<string, string>`）。传入后优先于 `asset_prefix` 拼接。
 + `furigana`, 是否强制启用振假名渲染。如果未强制启用，仅在`lang`设为`JP`时强制启用。
 + `fullframe`，是否采用全框卡
++ `overframe`，是否采用出框卡
 + `extend`，是否启用拓展卡
+
+本包的图片来自以下来源：
++ 原工程 yugioh-cards
++ 出框图资源来自 mercury233 的分叉
++ 拓展卡所用资源为自制。
 
 #### 缩放参数
 + `scale`, 整张卡片的缩放。不设置的场合，会根据所在容器自动缩放。
@@ -74,4 +81,4 @@ meta?|any[]|额外信息
 方括号包裹的内容居中对齐，大括号包裹的内容两端对齐，请参考卡片实际应有的对齐方式。
 
 ### 注释
-简体中文卡片的字体为`custom1`，如需使用`ygo-sc`或其他字体请自行修改CSS文件。
+简体中文卡片的字体为`custom1`。如果需要简体中文风格的卡片请将语言设置为`ZH_YD`。

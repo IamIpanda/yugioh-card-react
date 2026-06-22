@@ -139,12 +139,42 @@ let card4_texts: Record<Language, Partial<Data.Card>> = {
     [Language.ASTRAL]: {}
 }
 
+let card5_precursor: Partial<Data.Card> = {
+    code: 27118421,
+    image: '/image/27118422.jpg',
+    type: Data.Type.Monster + Data.Type.Fusion,
+    attribute: Data.Attribute.Dark,
+    level: 8,
+    attack: 2800,
+    defense: 2000,
+    name_color: ['white'],
+}
+
+let card5_texts: Record<Language, Partial<Data.Card>> = {
+    [Language.ZH_CN]: {
+        name: '四天之龙 凶饿毒毒毒毒毒毒毒毒毒融合龙',
+        subtype_text: '龙族/融合/效果',
+        pendulum_text: '①：你好。',
+        desc: "场上的暗属性怪兽×2\n\
+这个卡名在规则上也当作「捕食植物」卡使用。这个卡名的①②的效果1回合各能使用1次。\n\
+①：这张卡特殊召唤的场合，以场上1只其他的表侧表示怪兽为对象才能发动。那只怪兽的攻击力变成0，效果无效化，变成暗属性。\n\
+②：对方把效果发动时才能发动。包含这张卡的自己·对方场上的暗属性怪兽作为融合素材，把1只暗属性融合怪兽融合召唤。"
+    },
+    [Language.ZH_YD]: {},
+    [Language.ZH_TW]: {},
+    [Language.EN]: {},
+    [Language.JP]: {},
+    [Language.KR]: {},
+    [Language.ASTRAL]: {}
+}
+
 export const App = () => {
-    let [lang, _set_lang] = useState(Language.ZH_YD)
+    let [lang, _set_lang] = useState(Language.ZH_CN)
     return <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-        <Card asset_prefix="/assets" lang={lang} card={merge_card(card1_precursor, card1_texts, lang)} style={{ width: 'calc(25% - 5px)' }} />
-        <Card asset_prefix="/assets" lang={lang} card={merge_card(card2_precursor, card2_texts, lang)} style={{ width: 'calc(25% - 5px)' }} />
-        <Card asset_prefix="/assets" lang={lang} card={merge_card(card3_precursor, card3_texts, lang)} style={{ width: 'calc(25% - 5px)' }} full_frame />
-        <Card asset_prefix="/assets" lang={lang} card={merge_card(card4_precursor, card4_texts, lang)} style={{ width: 'calc(25% - 5px)' }} extend />
+        <Card asset_prefix="/assets" lang={lang} card={merge_card(card1_precursor, card1_texts, lang)} style={{ width: 'calc(20% - 5px)' }} />
+        <Card asset_prefix="/assets" lang={lang} card={merge_card(card2_precursor, card2_texts, lang)} style={{ width: 'calc(20% - 5px)' }} />
+        <Card asset_prefix="/assets" lang={lang} card={merge_card(card3_precursor, card3_texts, lang)} style={{ width: 'calc(20% - 5px)' }} />
+        <Card asset_prefix="/assets" lang={lang} card={merge_card(card4_precursor, card4_texts, lang)} style={{ width: 'calc(20% - 5px)' }} extend />
+        <Card asset_prefix="/assets" lang={lang} card={merge_card(card5_precursor, card5_texts, lang)} style={{ width: 'calc(20% - 5px)' }} over_frame />
     </div>
 }

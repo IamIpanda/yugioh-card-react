@@ -12,7 +12,8 @@
     display: inline-flex;
     flex-direction: column-reverse;
     position: relative;
-    top: -4px;
+    align-items: center;
+    top: 0px;
     height: 0px;
 }
 .yugioh-container .furigana rt {
@@ -29,8 +30,12 @@
     height: 0;
     text-align: center;
 }
+.yugioh-container .furigana ruby.katakana {
+    align-items: center;
+}
 .yugioh-container .furigana .katakana rt {
     text-align-last: justify;
+    width: 100%;
 }
 .yugioh-container .fur10igana rb {
     text-align: center;
@@ -81,10 +86,17 @@
     line-height: 1.15;
 }
 .yugioh-container .name.name-sc {
-    font-family: custom1, serif
+    font-family: custom1,serif
 }
-.yugioh-container .name.name-yd {
+.yugioh-container .name.name-sc.name-sc-yd {
     font-family: ygo-sc, serif;
+}
+.yugioh-container .name.name-sc.name-sc-c2 {
+    font-family: custom2,serif;
+}
+.yugioh-container .name.name-sc.name-sc-ig {
+    font-family: imggen,serif;
+    margin: 4px 0px 0px -4px;
 }
 .yugioh-container .name.name-tc {
     font-family: ygo-tc,'楷体', serif;
@@ -100,12 +112,15 @@
 .yugioh-container .name.name-jp {
     font-family: ygo-jp, serif
 }
-.yugioh-container .name.furigana ruby {
-    top: -9px;
-    gap: 3px;
+.yugioh-container .name .furigana ruby {
+    top: 0px;
+    gap: 0px;
 }
-.yugioh-container .name.furigana rt {
+.yugioh-container .name .furigana rt {
     font-size: 18px;
+}
+.yugioh-container .name .furigana rb {
+    margin-top: -5px;
 }
 .yugioh-container .name.name-white {
     color: white;
@@ -270,6 +285,10 @@
     font-family: ygo-jp, serif;
     top: 248px;
 }
+.yugioh-container .type.type-jp .furigana ruby {
+    top: 1px;
+    gap: 13px;
+}
 
 .yugioh-container .type .type-icon {
     margin-left: 10px;
@@ -302,20 +321,20 @@
     height: 368px;
 }
 .yugioh-container .description.description-en {
-    font-size: calc(42px*var(--font-size-scale));
+    font-size: calc(38px*var(--font-size-scale));
 }
 .yugioh-container .description.description-en.description-normal .effect {
     font-family: ygo-en-italic, serif;
 }
 .yugioh-container .description .furigana ruby {
-    gap: calc(14.5px*var(--font-size-scale));
+    gap: calc(12px*var(--font-size-scale));
 }
 .yugioh-container .description .furigana rt {
     text-align: center;
     font-size: calc(16px*var(--font-size-scale));
 }
 .yugioh-container .description .subtype .furigana ruby {
-    gap: 16px;
+    gap: 13px;
     
 }
 .yugioh-container .description .subtype .furigana rt {
@@ -359,6 +378,7 @@
 }
 .yugioh-container .description .effect {
     line-height: 1.2;
+    text-align: justify;
 }
 .yugioh-container .description .effect.furigana rt {
     font-size: calc(12px*var(--font-size-scale));
@@ -366,8 +386,14 @@
 .yugioh-container .description.description-sc {
     font-family: custom1, serif;
 }
-.yugioh-container .description.description-yd {
+.yugioh-container .description.description-sc.description-sc-yd {
     font-family: ygo-sc, serif;
+}
+.yugioh-container .description.description-sc.description-sc-c2 {
+    font-family: custom2, serif;
+}
+.yugioh-container .description.description-sc.description-sc-ig {
+    font-family: custom2, serif;
 }
 .yugioh-container .description.description-tc {
     font-family: ygo-tc, '楷体', serif;

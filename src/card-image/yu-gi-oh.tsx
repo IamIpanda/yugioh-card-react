@@ -1,4 +1,4 @@
-import { Language, Card as DataCard, decide_backend, Type, decide_attribute, decide_type_text, Linkmarker, is_white_name, BRACKET_TEXTS } from "./data"
+import { Language, ZH_CN_Style, Card as DataCard, decide_backend, Type, decide_attribute, decide_type_text, Linkmarker, is_white_name, BRACKET_TEXTS } from "./data"
 import { type HTMLAttributes, type CSSProperties, useEffect, useRef, useState } from "react"
 import "./yu-gi-oh.css"
 import { Furigana } from "./furigana"
@@ -7,6 +7,7 @@ type Config = {
     lang: Language
     furigana?: boolean
     asset_prefix?: String
+    zh_cn_style?: ZH_CN_Style
 }
 
 type CardProp = {
@@ -26,10 +27,10 @@ type CardProp = {
 const DEFAULT_ASSET_PREFIX = "https://cdn.jsdelivr.net/gh/IamIpanda/yugioh-card-react@master/public/assets"
 
 function Card(props: CardProp) {
-    const { card, image, lang: _lang, scale: _scale, name_scale, desc_scale, pdesc_scale, extend, full_frame, over_frame, ...rest_props } = props;
-    const asset_prefix = props.asset_prefix ?? DEFAULT_ASSET_PREFIX;
-    const lang = _lang == Language.ZH_YD ? Language.ZH_CN : _lang;
+    const { card, image, lang, scale: _scale, name_scale, desc_scale, pdesc_scale, extend, full_frame, over_frame, zh_cn_style: _zh_cn_style, ...rest_props } = props;
     const [scale, set_scale] = useState(_scale ?? 0.1);
+    const asset_prefix = props.asset_prefix ?? DEFAULT_ASSET_PREFIX;
+    const zh_cn_style = _zh_cn_style ?? ZH_CN_Style.Custom1;
     const container_element = useRef<HTMLDivElement>(null)
     if (_scale == null)
         useEffect(() => {
@@ -58,18 +59,36 @@ function Card(props: CardProp) {
         pendulum_asset_appendix += '-overframe'
         pendulum_appendix += '-overframe'
     }
+
+    let name_lang = lang, attribute_lang = lang, type_lang = lang, desc_lang = lang, pdesc_lang = lang, copyrigh_lang = lang;
+    if (lang == Language.ZH_CN && zh_cn_style == ZH_CN_Style.ImgGen) {
+        attribute_lang = Language.JP
+        type_lang = Language.JP
+    }
+    if (card.metas)
+        for (let meta of card.metas) {
+            if (typeof meta === 'string') {
+                if (meta.startsWith("name-lang")) name_lang = meta.split("-")[2] as Language
+                if (meta.startsWith("attribute-lang")) attribute_lang = meta.split("-")[2] as Language
+                if (meta.startsWith("type-lang")) type_lang = meta.split("-")[2] as Language
+                if (meta.startsWith("desc-lang")) desc_lang = meta.split("-")[2] as Language
+                if (meta.startsWith("pdesc-lang")) pdesc_lang = meta.split("-")[2] as Language
+                if (meta.startsWith("copyright-lang")) copyrigh_lang = meta.split("-")[2] as Language
+            }
+        }
+
+    const zh_cn_appendix = lang == Language.ZH_CN ? `-${lang}-${zh_cn_style}` : null
     const card_image = image ?? card.image;
-    const devolution = !(props.furigana ?? lang == Language.JP);
-    const brackets = BRACKET_TEXTS[lang];
+    const devolution = (lang: Language) => !(props.furigana ?? (lang == Language.JP));
+    const brackets = BRACKET_TEXTS[desc_lang];
     const copyright = card.copyright === 'auto' ? {
         [Language.ASTRAL]: 'jp',
         [Language.EN]: 'en',
         [Language.JP]: 'jp',
         [Language.ZH_CN]: 'sc',
-        [Language.ZH_YD]: 'sc',
         [Language.ZH_TW]: 'jp',
         [Language.KR]: 'jp'
-    }[lang] : card.copyright
+    }[copyrigh_lang] : card.copyright
 
     return <div className="yugioh-container" {...rest_props} ref={container_element}>
         <div className={`card ${_scale == null ? 'card-auto' : ''}`} style={{ '--card-scale': scale } as CSSProperties} >
@@ -77,25 +96,25 @@ function Card(props: CardProp) {
             <link rel="stylesheet" type="text/css" href={`${asset_prefix}/yugioh/font/ygo-font.css`} />
             <link rel="stylesheet" type="text/css" href={`${asset_prefix}/custom-font/custom-font.css`} />
 
-            <Name className={`name name-${_lang} ${is_white_name(card.type, extend) ? 'name-white' : ''}`} devolution={devolution} scale={name_scale} color={card.name_color}>{card.name}</Name>
-            <Attribute card={card} lang={lang} asset_prefix={asset_prefix} />
+            <Name className={`name name-${name_lang} ${zh_cn_appendix && "name" + zh_cn_appendix} ${is_white_name(card.type, extend) ? 'name-white' : ''}`} devolution={devolution(name_lang)} scale={name_scale} color={card.name_color}>{card.name}</Name>
+            <Attribute card={card} lang={attribute_lang} asset_prefix={asset_prefix} />
             {is_link ? null : is_monster ? <Levels card={card} lang={lang} asset_prefix={asset_prefix} />
-                : <Types lang={lang} asset_prefix={asset_prefix} devolution={devolution} {...decide_type_text(card.type, lang)} />}
+                : <Types lang={type_lang} asset_prefix={asset_prefix} devolution={devolution(type_lang)} {...decide_type_text(card.type, type_lang)} />}
             {card_image && <img className={`image${pendulum_appendix}`} src={card_image} />}
             <img className={`mask${pendulum_appendix}`} src={`${asset_prefix}/yugioh/image/card-mask${pendulum_asset_appendix}.png`} />
             {is_pendulum && <>
                 {card.lscale && <div className="scale scale-left">{card.lscale}</div>}
                 {card.rscale && <div className="scale scale-right">{card.rscale}</div>}
-                {card.pendulum_text && <EffectDescription className={`description description-${_lang} description-pendulum`} flag={card.pendulum_text} scale={pdesc_scale}>
-                    <Furigana devolution={devolution}>{card.pendulum_text}</Furigana>
+                {card.pendulum_text && <EffectDescription className={`description description-${pdesc_lang} ${zh_cn_appendix && "description" + zh_cn_appendix}  description-pendulum`} flag={card.pendulum_text} scale={pdesc_scale}>
+                    <Furigana devolution={devolution(pdesc_lang)}>{card.pendulum_text}</Furigana>
                 </EffectDescription>}
             </>}
             {card.pack_info && <div className={`pack-info${is_pendulum ? ' pack-info-pendulum' : ''}${is_link ? ' pack-info-link' : ''}${full_frame ? ' pack-info-fullframe' : ''}`}>{card.pack_info}</div>}
             {is_link && <LinkMarker linkmarker={card.defense ?? 0} pendulum={is_pendulum || full_frame} lang={lang} asset_prefix={asset_prefix} />}
             {card.twentieth && <img className="twentieth" src={`${asset_prefix}/yugioh/image/twentieth.png`} />}
-            <EffectDescription className={`description description-${_lang} ${is_normal ? 'description-normal' : ''}${is_monster ? '' : 'description-non-monster'}`} flag={card.desc} scale={desc_scale}>
-                {card.subtype_text && <div className="subtype"><div className="wrapper">{brackets[0]}</div><Furigana devolution={devolution}>{card.subtype_text}</Furigana><div className="wrapper">{brackets[1]}</div></div>}
-                <Furigana className="effect" devolution={devolution}>{card.desc}</Furigana>
+            <EffectDescription className={`description description-${desc_lang} ${zh_cn_appendix && "description" + zh_cn_appendix} ${is_normal ? 'description-normal' : ''}${is_monster ? '' : 'description-non-monster'}`} flag={card.desc} scale={desc_scale}>
+                {card.subtype_text && <div className="subtype"><div className="wrapper">{brackets[0]}</div><Furigana devolution={devolution(desc_lang)}>{card.subtype_text}</Furigana><div className="wrapper">{brackets[1]}</div></div>}
+                <Furigana className="effect" devolution={devolution(desc_lang)}>{card.desc}</Furigana>
                 {card.flavor_text && <div className="flavor">{card.flavor_text}</div>}
             </EffectDescription>
             {is_monster && <img className="number-background" src={`${asset_prefix}/yugioh/image/${(card.type & Type.Link) > 0 ? 'atk-link.svg' : 'atk-def.svg'}`} />}
@@ -131,7 +150,7 @@ function Name(props: Omit<HTMLAttributes<HTMLDivElement>, 'color'> & { devolutio
     else
         name_style = { background: `linear-gradient(${color.join(', ')})`, backgroundClip: 'text', '-webkit-background-clip': 'text', color: 'transparent' }
     return <div {...rest_props} ref={element} style={style}>
-        <Furigana devolution={devolution} style={{ transform: `scaleX(${scale})`, transformOrigin: 'left', display: 'inline-block', ...name_style }}>{children}</Furigana>
+        <Furigana devolution={devolution} style={{ transform: `scaleX(${scale})`, transformOrigin: 'left', width: 'max-content', height: 'inherit', ...name_style }}>{children}</Furigana>
     </div>
 }
 
@@ -157,7 +176,6 @@ function Levels(props: { card: DataCard } & Config) {
 function Attribute(props: { card: DataCard } & Config) {
     let lang = props.lang;
     let appendix = ""
-    if (lang == Language.ZH_YD) lang = Language.ZH_CN
     if (lang !== Language.ZH_CN && lang !== Language.ZH_TW)
         appendix = "-" + lang.toString()
 
@@ -218,3 +236,5 @@ function EffectDescription(props: { scale?: number, min_scale?: number, flag: an
 export {
     Card
 }
+
+export default Card;

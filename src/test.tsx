@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Language } from "./card-image/data"
+import { Language, ZH_CN_Style } from "./card-image/data"
 import { Card, Data } from "./main"
 import "./test.css"
 
@@ -13,7 +13,7 @@ function merge_card(precursor: Partial<Data.Card>, texts: Record<Language, Parti
 let card1_precursor: Partial<Data.Card> = {
     code: 89631139,
     image: '/image/89631140.jpg',
-    type: 17,
+    type: Data.Type.Monster + Data.Type.Normal,
     attribute: 16,
     level: 8,
     attack: 3000,
@@ -23,7 +23,6 @@ let card1_precursor: Partial<Data.Card> = {
 }
 let card1_texts: Record<Language, Partial<Data.Card>> = {
     [Language.ZH_CN]: { name: '青眼白龙', desc: '以高攻击力著称的传说之龙。任何对手都能粉碎，其破坏力不可估量。', subtype_text: '龙族'},
-    [Language.ZH_YD]: { name: '青眼白龙', desc: '以高攻击力著称的传说之龙。任何对手都能粉碎，其破坏力不可估量。', subtype_text: '龙族'},
     [Language.ZH_TW]: { name: '青眼白龍', desc: '以高攻擊力著稱的傳說之龍。任何對手都能夠粉碎，其破壞力不可估量。', subtype_text: '龍族' },
     [Language.EN]: { name: 'Blue-Eyes White Dragon', desc: 'This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.', subtype_text: 'Dragon' },
     [Language.JP]: { name: '{青眼の白龍(ブルーアイズ・ホワイト・ドラゴン)}', desc: '[高(たか)]い[攻(こう)][撃(げき)][力(りょく)]を[誇(ほこ)]る[伝(でん)][説(せつ)]のドラゴン。どんな[相(あい)][手(て)]でも[粉(ふん)][砕(さい)]する、その[破(は)][壊(かい)][力(りょく)]は[計(はか)]り[知(し)]れない。', subtype_text: 'ドラゴン[族(ぞく)]／[通(つう)][常(じょう)]' },
@@ -34,12 +33,11 @@ let card1_texts: Record<Language, Partial<Data.Card>> = {
 let card2_precursor: Partial<Data.Card> = {
     code: 81439173,
     image: '/image/81439173.jpg',
-    type: Data.Type.Spell + Data.Type.Ritual,
-    pack_info: 'SJ2-029'
+    type: Data.Type.Spell,
+    pack_info: 'SJ2-029',
 }
 let card2_texts: Record<Language, Partial<Data.Card>> = {
     [Language.ZH_CN]: { name: '愚蠢的埋葬', desc: '①：从卡组把1只怪兽送去墓地。' },
-    [Language.ZH_YD]: { name: '愚蠢的埋葬', desc: '①：从卡组把1只怪兽送去墓地。' },
     [Language.ZH_TW]: { name: '愚蠢的埋葬', desc: '①：從卡組把1隻怪獸送去墓地。' },
     [Language.EN]: { name: 'Foolish Burial', desc: 'Send 1 monster from your Deck to the GY.' },
     [Language.JP]: { name: 'おろかな[埋(まい)][葬(そう)]', desc: '①：デッキからモンスター１[体(たい)]を[墓(ぼ)][地(ち)]へ[送(おく)]る。', flavor_text: '「おろかな埋葬」は、デッキからモンスターを墓地へ送る魔法カード。' },
@@ -60,11 +58,6 @@ let card3_precursor: Partial<Data.Card> = {
 }
 let card3_texts: Record<Language, Partial<Data.Card>> = {
     [Language.ZH_CN]: {
-        name: 'S：P小夜', desc: '效果怪兽2只\n\
-这个卡名的①②的效果1回合各能使用1次。\n\
-①：这张卡用融合·同调·超量·连接怪兽的其中任意种为素材作连接召唤的场合，以自己或对方的场上·墓地1张卡为对象才能发动。那张卡除外。这个回合，自己怪兽不能直接攻击。\n\
-②：对方的效果发动时，以包含自己场上的怪兽的场上2只表侧表示怪兽为对象才能发动。那2只怪兽直到结束阶段除外。', subtype_text: '战士族/连接/效果' },
-    [Language.ZH_YD]: {
         name: 'S：P小夜', desc: '效果怪兽2只\n\
 这个卡名的①②的效果1回合各能使用1次。\n\
 ①：这张卡用融合·同调·超量·连接怪兽的其中任意种为素材作连接召唤的场合，以自己或对方的场上·墓地1张卡为对象才能发动。那张卡除外。这个回合，自己怪兽不能直接攻击。\n\
@@ -111,12 +104,6 @@ let card4_texts: Record<Language, Partial<Data.Card>> = {
         subtype_text: '龙族／灵摆／调整／效果',
         pendulum_text: "①：1回合1次，另一边的自己的灵摆区域有卡存在的场合才能发动。那张卡破坏，把1张那张卡的同名卡从卡组加入手卡。",
     },
-    [Language.ZH_YD]: {
-        name: '龙剑士 光辉星·灵摆',
-        desc: '不能用这张卡为素材把「龙剑士」怪兽以外的融合·同调·超量怪兽特殊召唤。',
-        subtype_text: '龙族／灵摆／调整／效果',
-        pendulum_text: "①：1回合1次，另一边的自己的灵摆区域有卡存在的场合才能发动。那张卡破坏，把1张那张卡的同名卡从卡组加入手卡。",
-    },
     [Language.ZH_TW]: { name: '' },
     [Language.EN]: {
         name: 'Luster Pendulum, the Dracoslayer', 
@@ -160,7 +147,6 @@ let card5_texts: Record<Language, Partial<Data.Card>> = {
 ①：这张卡特殊召唤的场合，以场上1只其他的表侧表示怪兽为对象才能发动。那只怪兽的攻击力变成0，效果无效化，变成暗属性。\n\
 ②：对方把效果发动时才能发动。包含这张卡的自己·对方场上的暗属性怪兽作为融合素材，把1只暗属性融合怪兽融合召唤。"
     },
-    [Language.ZH_YD]: {},
     [Language.ZH_TW]: {},
     [Language.EN]: {},
     [Language.JP]: {},
@@ -170,11 +156,12 @@ let card5_texts: Record<Language, Partial<Data.Card>> = {
 
 export const App = () => {
     let [lang, _set_lang] = useState(Language.ZH_CN)
+    let [zh_cn_style, _set_zh_cn_style] = useState<ZH_CN_Style>(ZH_CN_Style.ImgGen)
     return <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-        <Card asset_prefix="/assets" lang={lang} card={merge_card(card1_precursor, card1_texts, lang)} style={{ width: 'calc(20% - 5px)' }} />
-        <Card asset_prefix="/assets" lang={lang} card={merge_card(card2_precursor, card2_texts, lang)} style={{ width: 'calc(20% - 5px)' }} />
-        <Card asset_prefix="/assets" lang={lang} card={merge_card(card3_precursor, card3_texts, lang)} style={{ width: 'calc(20% - 5px)' }} />
-        <Card asset_prefix="/assets" lang={lang} card={merge_card(card4_precursor, card4_texts, lang)} style={{ width: 'calc(20% - 5px)' }} extend />
-        <Card asset_prefix="/assets" lang={lang} card={merge_card(card5_precursor, card5_texts, lang)} style={{ width: 'calc(20% - 5px)' }} over_frame />
+        <Card asset_prefix="/assets" lang={lang} zh_cn_style={zh_cn_style} card={merge_card(card1_precursor, card1_texts, lang)} style={{ width: 'calc(20% - 5px)' }} />
+        <Card asset_prefix="/assets" lang={lang} zh_cn_style={zh_cn_style} card={merge_card(card2_precursor, card2_texts, lang)} style={{ width: 'calc(20% - 5px)' }} />
+        <Card asset_prefix="/assets" lang={lang} zh_cn_style={zh_cn_style} card={merge_card(card3_precursor, card3_texts, lang)} style={{ width: 'calc(20% - 5px)' }} />
+        <Card asset_prefix="/assets" lang={lang} zh_cn_style={zh_cn_style} card={merge_card(card4_precursor, card4_texts, lang)} style={{ width: 'calc(20% - 5px)' }} extend />
+        <Card asset_prefix="/assets" lang={lang} zh_cn_style={zh_cn_style} card={merge_card(card5_precursor, card5_texts, lang)} style={{ width: 'calc(20% - 5px)' }} over_frame />
     </div>
 }

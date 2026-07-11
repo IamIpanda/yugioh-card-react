@@ -14,8 +14,9 @@ Currently, only standard Yu-Gi-Oh! card is supported
 <Card 
   card={card} 
   image={alt} 
-  lang={Language.zh_CN} 
+  lang={Language.ZH_CN} 
   asset_prefix="https://xxx" 
+  zh_cn_style?
   furigana?
   fullframe?
   extend?
@@ -27,6 +28,7 @@ Currently, only standard Yu-Gi-Oh! card is supported
 + `card`, `Data.Card` object
 + `image`, Card image
 + `lang`, Card Language (Enum `Data.Language`)
++ `zh_cn_style`, Font style for Simplified Chinese cards (Enum `Data.ZH_CN_Style`). Only effective when `lang` is `ZH_CN`. Defaults to `Custom1`.
 + `asset_prefix`, Asset CDN prefix. Defaults to jsDelivr CDN when not set.
 + `assets`, Asset path override map (`Record<string, string>`). Takes priority over `asset_prefix` concatenation.
 + `furigana`, Force render furigana inner text. Otherwise, only enabled when `lang` is `JP`.
@@ -44,9 +46,9 @@ https://cdn.jsdelivr.net/gh/IamIpanda/yugioh-card-react@master/public/assets/
 To self-host, deploy `public/assets/` to any static server and pass `asset_prefix`.
 
 Assets are sourced from:
-+ Original yugioh-cards project
-+ Over-frame resources from mercury233's fork
-+ Extended card resources are self-made.
++ Original [yugioh-cards](https://github.com/kooriookami/yugioh-card) project
++ Over-frame (`overframe`) resources from [mercury233's fork](https://github.com/mercury233/yugioh-card)
++ Extended card (`fullframe`, `oscillulam`) resources are self-made.
 
 #### Scale Parameters
 + `scale`, Scale for the whole card. When undefined will auto scale to fit.
@@ -54,11 +56,20 @@ Assets are sourced from:
 + `desc_scale`, Font size scale for effect panel. When undefined will auto scale by text length. (Will cause the panel flash) Min 0.5x.
 + `pdesc_scale`, Font size scale for pendulum effect panel. When undefined will auto scale by text length. (Will cause the panel flash) Min 0.5x.
 
+### Simplified Chinese Style Enum
+Controls the font family for Simplified Chinese (`ZH_CN`) cards.
+
+|Value|Font Family|Description|
+|-----|-----------|-----------|
+|`Custom1`|`custom1`|Default style|
+|`YD`|`ygo-sc`|YD card font|
+|`Custom2`|`custom2`|ygopro style|
+
 #### Extended Cards
 Extended (fan-made) cards are cards that do not exist in official Yu-Gi-Oh!. Current behavior for extended cards:
 
 - Cards with `type` having both Pendulum and Trap tags will render with the bottom half colored red.
-- If `extra` contains `winged-dragon|tormentor|sky-dragon|` the card will use corresponding themed background colors.
+- If `extra` contains `winged-dragon`,`tormentor`,`sky-dragon` the card will use corresponding themed background colors.
 
 #### `Data.Card` object
 |FieldName|Type|Description|
@@ -76,18 +87,15 @@ Extended (fan-made) cards are cards that do not exist in official Yu-Gi-Oh!. Cur
 |lscale?|number|Left Scale; valid only when `type` includes Pendulum|
 |rscale?|number|Right Scale; valid only when `type` includes Pendulum|
 |pack_info?|string|Pack name|
-|name_color?|string|Card name color|
 |flavor_text?|string|Flavor text|
 |image?|string|Card image (will be overridden by `prop.image`|
 |copyright?|'auto'&#124;'sc'&#124;'jp'&#124;'en'|Copyright text; when `auto` the value is decided by `lang`|
 |laser?|'laser1'&#124;'laser2'&#124;'laser3'&#124;'laser4'|Laser badge|
 |rare?|'dt'&#124;'ur'&#124;'gr'&#124;'hr'&#124;'ser'&#124;'gser'&#124;'pser'|Card rarity|
 |twentieth?|boolean|20th anniversary sign|
+|metas?|any[]|Extra metadata; used for themed backgrounds (e.g. `winged-dragon`, `tormentor`, `sky-dragon`)|
 |name_color?|string&#124;string[]|Card name color; when multiple values are provided a gradient will be used|
 
 ### Japanese Furigana
 Use `[Kanji (Hiragana)]` and `{Kanji (Katakana)}` for furigana.  
 The content wrapped in square brackets should be center-aligned, and the content wrapped in curly braces should be justified (left and right aligned); Please refer to the actual alignment on the card.
-
-### Notes
-The font for Simplified Chinese cards is `custom1`. Set language to `ZH_YD` for Simplified-Chinese-style cards.

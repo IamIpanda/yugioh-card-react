@@ -1,7 +1,5 @@
 enum Language {
     ZH_CN = "sc",
-    // ZH_CN, but with different font, used for real SC cards
-    ZH_YD = "yd",
     ZH_TW = "tc",
     EN = "en",
     JP = "jp",
@@ -9,6 +7,12 @@ enum Language {
     ASTRAL = "astral"
 }
 
+enum ZH_CN_Style {
+    YD = "yd",
+    Custom1 = "c1",
+    Custom2 = "c2",
+    ImgGen = "ig"
+}
 
 type Card = {
     code?: number,
@@ -181,7 +185,6 @@ const TYPE_TEXTS: { [key in Language]?: {[key in Type]?: string}} = {
 const BRACKET_TEXTS: Record<Language, [String, String]> = {
     [Language.EN]: ['[', ']'],
     [Language.ZH_CN]: ['【', '】'],
-    [Language.ZH_YD]: ['【', '】'],
     [Language.ZH_TW]: ['【', '】'],
     [Language.JP]: ['【', '】'],
     [Language.KR]: ['[', ']'],
@@ -191,6 +194,7 @@ const BRACKET_TEXTS: Record<Language, [String, String]> = {
 export {
     type Card,
     Language,
+    ZH_CN_Style,
     Linkmarker,
     Type,
     Attribute,

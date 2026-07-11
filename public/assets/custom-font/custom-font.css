@@ -11,3 +11,10 @@
   url("custom2.woff") format("woff");
   font-display: swap;
 }
+
+@font-face {
+  font-family: "imggen";
+  src: url("imggen.woff2") format("woff2"),
+  url("imggen.woff") format("woff");
+  font-display: swap;
+}
